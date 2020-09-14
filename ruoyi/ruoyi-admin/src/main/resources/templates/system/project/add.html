@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增项目名称')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-project-add">
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">项目名：</label>
+                <div class="col-sm-4">
+                    <input name="projectName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">项目描述：</label>
+                <div class="col-sm-10">
+                    <textarea name="projectDesc" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">责任单位：</label>
+               <div class="col-sm-4">
+                    <select name="responsibleUnit" class="form-control m-b" required>
+                        <option value="陕西汽车控股集团有限公司">陕西汽车控股集团有限公司</option>
+                        <option value="陕西重型汽车有限公司">陕西重型汽车有限公司</option>
+                        <option value="陕汽集团商用车有限公司">陕汽集团商用车有限公司</option>
+                    </select>
+                </div>
+                    <label class="col-sm-2 control-label is-required ">责任人：</label>
+                   <div class="col-sm-4">
+                        <input name="responsibleUser" class="form-control" type="text" required>
+                    </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">创新点：</label>
+                <div class="col-sm-10">
+                    <textarea name="innovativePoints" class="form-control" required></textarea>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label is-required ">项目周期：</label>
+               <div class="col-sm-4">
+                    <input name="projectCycle" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label is-required">保密级别：</label>
+               <div class="col-sm-4">
+                    <select name="securityLevel" class="form-control m-b" required>
+                        <option value="1">1级</option>
+                        <option value="2">2级</option>
+                        <option value="3">3级</option>
+                        <option value="4">4级</option>
+                    </select>
+            </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label ">计划专利数量：</label>
+               <div class="col-sm-4">
+                    <input name="planProposalNumber" class="form-control" type="text" required>
+                </div>
+                <label class="col-sm-2 control-label ">计划发明专利数量：</label>
+               <div class="col-sm-4">
+                    <input name="planInventorPropNumber" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">项目文献：</label>
+                <div class="col-sm-10">
+                    <textarea name="projectLiterature" class="form-control" required></textarea>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-2 control-label  ">维护人：</label>
+               <div class="col-sm-4">
+                    <input name="repairsUser" class="form-control" type="text" >
+                </div>
+                <label class="col-sm-2 control-label ">维护时间：</label>
+               <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="repairsTime" class="form-control" placeholder="yyyy-MM-dd" type="text" >
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">项目备注：</label>
+                <div class="col-sm-10">
+                    <textarea name="projectComments" class="form-control" ></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/project"
+        $("#form-project-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-project-add').serialize());
+            }
+        }
+
+        $("input[name='repairsTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

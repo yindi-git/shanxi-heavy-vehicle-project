@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.co.mapper.RyCoTaskMapper">
+    
+    <resultMap type="RyCoTask" id="RyCoTaskResult">
+        <result property="taskid"    column="taskId"    />
+        <result property="taskname"    column="taskName"    />
+        <result property="createtime"    column="createTime"    />
+        <result property="timenodes"    column="timeNodes"    />
+        <result property="usertime"    column="userTime"    />
+        <result property="agencyname"    column="agencyName"    />
+    </resultMap>
+
+    <sql id="selectRyCoTaskVo">
+        select taskId, taskName, createTime, timeNodes, userTime, agencyName from ry_co_task
+    </sql>
+
+    <select id="selectRyCoTaskList" parameterType="RyCoTask" resultMap="RyCoTaskResult">
+        <include refid="selectRyCoTaskVo"/>
+        <where>  
+            <if test="taskname != null  and taskname != ''"> and taskName like concat('%', #{taskname}, '%')</if>
+            <if test="createtime != null "> and createTime = #{createtime}</if>
+            <if test="timenodes != null "> and timeNodes = #{timenodes}</if>
+            <if test="usertime != null  and usertime != ''"> and userTime = #{usertime}</if>
+            <if test="agencyname != null  and agencyname != ''"> and agencyName like concat('%', #{agencyname}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRyCoTaskById" parameterType="Integer" resultMap="RyCoTaskResult">
+        <include refid="selectRyCoTaskVo"/>
+        where taskId = #{taskid}
+    </select>
+        
+    <insert id="insertRyCoTask" parameterType="RyCoTask" useGeneratedKeys="true" keyProperty="taskid">
+        insert into ry_co_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskname != null  and taskname != ''">taskName,</if>
+            <if test="createtime != null ">createTime,</if>
+            <if test="timenodes != null ">timeNodes,</if>
+            <if test="usertime != null  and usertime != ''">userTime,</if>
+            <if test="agencyname != null  and agencyname != ''">agencyName,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskname != null  and taskname != ''">#{taskname},</if>
+            <if test="createtime != null ">#{createtime},</if>
+            <if test="timenodes != null ">#{timenodes},</if>
+            <if test="usertime != null  and usertime != ''">#{usertime},</if>
+            <if test="agencyname != null  and agencyname != ''">#{agencyname},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyCoTask" parameterType="RyCoTask">
+        update ry_co_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskname != null  and taskname != ''">taskName = #{taskname},</if>
+            <if test="createtime != null ">createTime = #{createtime},</if>
+            <if test="timenodes != null ">timeNodes = #{timenodes},</if>
+            <if test="usertime != null  and usertime != ''">userTime = #{usertime},</if>
+            <if test="agencyname != null  and agencyname != ''">agencyName = #{agencyname},</if>
+        </trim>
+        where taskId = #{taskid}
+    </update>
+
+    <delete id="deleteRyCoTaskById" parameterType="Integer">
+        delete from ry_co_task where taskId = #{taskid}
+    </delete>
+
+    <delete id="deleteRyCoTaskByIds" parameterType="String">
+        delete from ry_co_task where taskId in 
+        <foreach item="taskid" collection="array" open="(" separator="," close=")">
+            #{taskid}
+        </foreach>
+    </delete>
+    
+</mapper>

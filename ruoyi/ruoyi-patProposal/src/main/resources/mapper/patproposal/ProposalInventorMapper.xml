@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.ProposalInventorMapper">
+    
+    <resultMap type="ProposalInventor" id="ProposalInventorResult">
+        <result property="inventorId"    column="inventor_id"    />
+        <result property="proposalId"    column="proposal_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="dept"    column="dept"    />
+        <result property="phone"    column="phone"    />
+        <result property="idcard"    column="idcard"    />
+        <result property="email"    column="email"    />
+        <result property="contribution"    column="contribution"    />
+        <result property="isFirstInventor"    column="is_first_inventor"    />
+    </resultMap>
+
+    <sql id="selectProposalInventorVo">
+        select inventor_id, proposal_id, user_id, user_name, dept, phone, idcard, email, contribution, is_first_inventor from ry_proposal_inventor
+    </sql>
+
+    <select id="selectProposalInventorList" parameterType="ProposalInventor" resultMap="ProposalInventorResult">
+        <include refid="selectProposalInventorVo"/>
+        <where>  
+            <if test="proposalId != null  and proposalId != ''"> and proposal_id = #{proposalId}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="dept != null  and dept != ''"> and dept = #{dept}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="idcard != null  and idcard != ''"> and idcard = #{idcard}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="contribution != null "> and contribution = #{contribution}</if>
+            <if test="isFirstInventor != null  and isFirstInventor != ''"> and is_first_inventor = #{isFirstInventor}</if>
+        </where>
+    </select>
+    
+    <select id="selectProposalInventorById" parameterType="String" resultMap="ProposalInventorResult">
+        <include refid="selectProposalInventorVo"/>
+        where inventor_id = #{inventorId}
+    </select>
+
+    <select id="selectInventorByProposalId" parameterType="String" resultMap="ProposalInventorResult">
+        <include refid="selectProposalInventorVo"/>
+        where proposal_id = #{proposalId}
+    </select>
+
+    <select id="selectFirstInventorByProposalId" parameterType="String" resultMap="ProposalInventorResult">
+        <include refid="selectProposalInventorVo"/>
+        where proposal_id = #{proposalId}   and  is_first_inventor='1'
+    </select>
+    <insert id="insertProposalInventor" parameterType="ProposalInventor">
+        insert into ry_proposal_inventor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inventorId != null  and inventorId != ''">inventor_id,</if>
+            <if test="proposalId != null  and proposalId != ''">proposal_id,</if>
+            <if test="userId != null  and userId != ''">user_id,</if>
+            <if test="userName != null  and userName != ''">user_name,</if>
+            <if test="dept != null  and dept != ''">dept,</if>
+            <if test="phone != null  and phone != ''">phone,</if>
+            <if test="idcard != null  and idcard != ''">idcard,</if>
+            <if test="email != null  and email != ''">email,</if>
+            <if test="contribution != null ">contribution,</if>
+            <if test="isFirstInventor != null  and isFirstInventor != ''">is_first_inventor,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inventorId != null  and inventorId != ''">#{inventorId},</if>
+            <if test="proposalId != null  and proposalId != ''">#{proposalId},</if>
+            <if test="userId != null  and userId != ''">#{userId},</if>
+            <if test="userName != null  and userName != ''">#{userName},</if>
+            <if test="dept != null  and dept != ''">#{dept},</if>
+            <if test="phone != null  and phone != ''">#{phone},</if>
+            <if test="idcard != null  and idcard != ''">#{idcard},</if>
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="contribution != null ">#{contribution},</if>
+            <if test="isFirstInventor != null  and isFirstInventor != ''">#{isFirstInventor},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProposalInventor" parameterType="ProposalInventor">
+        update ry_proposal_inventor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">proposal_id = #{proposalId},</if>
+            <if test="userId != null  and userId != ''">user_id = #{userId},</if>
+            <if test="userName != null  and userName != ''">user_name = #{userName},</if>
+            <if test="dept != null  and dept != ''">dept = #{dept},</if>
+            <if test="phone != null  and phone != ''">phone = #{phone},</if>
+            <if test="idcard != null  and idcard != ''">idcard = #{idcard},</if>
+            <if test="email != null  and email != ''">email = #{email},</if>
+            <if test="contribution != null ">contribution = #{contribution},</if>
+            <if test="isFirstInventor != null  and isFirstInventor != ''">is_first_inventor = #{isFirstInventor},</if>
+        </trim>
+        where inventor_id = #{inventorId}
+    </update>
+
+
+    <delete id="deleteInventorByProposalId" parameterType="String">
+        delete from ry_proposal_inventor where proposal_id = #{proposalId}
+    </delete>
+
+    <delete id="deleteProposalInventorById" parameterType="String">
+        delete from ry_proposal_inventor where inventor_id = #{inventorId}
+    </delete>
+
+    <delete id="deleteProposalInventorByIds" parameterType="String">
+        delete from ry_proposal_inventor where inventor_id in 
+        <foreach item="inventorId" collection="array" open="(" separator="," close=")">
+            #{inventorId}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-budget-edit" th:object="${ryCoBudget}">
+            <input name="budgetid" th:field="*{budgetid}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公司主体：</label>
+                <div class="col-sm-8">
+                    <input name="applicantMain" th:field="*{applicantMain}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">公司编码：</label>
+                <div class="col-sm-8">
+                    <input name="applicantCode" th:field="*{applicantCode}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">预算年度：</label>
+                <div class="col-sm-8">
+                    <input name="budgetYear" th:field="*{budgetYear}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">业务名称：</label>
+                <div class="col-sm-8">
+                    <input name="businessName" th:field="*{businessName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">预算编号：</label>
+                <div class="col-sm-8">
+                    <input name="budgetCode" th:field="*{budgetCode}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">预算额度：</label>
+                <div class="col-sm-8">
+                    <input name="budgetLimit" th:field="*{budgetLimit}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">业务描述：</label>
+                <div class="col-sm-8">
+                    <textarea name="businessDescribe" class="form-control">[[*{businessDescribe}]]</textarea>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">费用编码：</label>
+                <div class="col-sm-8">
+                    <input name="costCode" th:field="*{costCode}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">费用项目：</label>
+                <div class="col-sm-8">
+                    <input name="costProject" th:field="*{costProject}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">操作人：</label>
+                <div class="col-sm-8">
+                    <input name="operator" th:field="*{operator}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">执行情况：</label>
+                <div class="col-sm-8">
+                    <input name="budgetExecute" th:field="*{budgetExecute}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">执行率：</label>
+                <div class="col-sm-8">
+                    <input name="executeRate" th:field="*{executeRate}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">操作时间：</label>
+                <div class="col-sm-8">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="operatTime" th:value="${#dates.format(ryCoBudget.operatTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/budget";
+        $("#form-budget-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-budget-edit').serialize());
+            }
+        }
+
+        $("input[name='operatTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+</html>

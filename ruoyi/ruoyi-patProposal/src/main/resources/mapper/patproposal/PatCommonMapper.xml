@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.PatCommonMapper">
+
+    <select id="getApplicant" resultType="java.util.Map">
+        select  * from ry_proposal_applicant;
+    </select>
+
+    <select id="getApplicantName" parameterType="java.lang.String" resultType="java.lang.String">
+        select applicant_name from ry_proposal_applicant where applicant_id=#{applicantId};
+    </select>
+
+    <select id="getProposalType" resultType="java.util.Map">
+        select  * from ry_proposal_type;
+    </select>
+    
+    
+     <select id="getProposalPatent" resultType="java.util.Map">
+        select  * from ry_proposal_patent;
+    </select>
+    
+    <select id="getProposalList" resultType="java.util.Map">
+		SELECT proposal_id,proposal_name FROM ry_proposal_pat WHERE is_delete = 1
+<!-- 		AND proposal_id
+		NOT IN(SELECT proposal_id FROM ry_patentl_permit) -->
+    </select>
+    
+
+    <select id="getProposalImportance" resultType="java.util.Map">
+        select  * from ry_proposal_importance;
+    </select>
+
+    <select id="getProposalProject" resultType="java.util.Map">
+        select  * from ry_proposal_project;
+    </select>
+
+    <select id="getProposalMotorcycle" resultType="java.util.Map">
+        select  * from ry_proposal_motorcycle;
+    </select>
+
+    <select id="getProposalCountry" resultType="java.util.Map">
+        select  * from ry_proposal_country;
+    </select>
+
+    <select id="getProposalTechnical" resultType="java.util.Map">
+        select  * from ry_proposal_technical;
+    </select>
+
+    <select id="getTodoItem" parameterType="java.lang.String" resultType="java.util.Map">
+        select  * from biz_todo_item where instance_id=#{instanceId};
+    </select>
+
+    <select id="getProposalComment" parameterType="java.lang.String" resultType="java.util.Map">
+       SELECT * FROM act_hi_comment a
+       LEFT JOIN biz_todo_item b ON a.task_id_ =b.task_id
+       LEFT JOIN ry_proposal_pat p ON p.instance_id=b.instance_id
+       where instance_id=#{instanceId};
+    </select>
+    
+    
+    
+  	<select id="getNewIdPermit" parameterType="java.lang.String" resultType="Integer"  statementType="PREPARED">
+		SELECT permit_id FROM ${tableName} ORDER BY permit_id DESC limit 1
+    </select>    
+    
+    
+    
+    
+    
+</mapper>

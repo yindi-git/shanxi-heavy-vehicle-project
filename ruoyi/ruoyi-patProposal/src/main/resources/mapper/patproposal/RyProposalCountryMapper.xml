@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.RyProposalCountryMapper">
+
+    <resultMap type="RyProposalCountry" id="RyProposalCountryResult">
+        <result property="countryId"    column="country_id"    />
+        <result property="countryCode"    column="country_code"    />
+        <result property="countryName"    column="country_name"    />
+    </resultMap>
+
+    <sql id="selectRyProposalCountryVo">
+        select country_id, country_code, country_name from ry_proposal_country
+    </sql>
+
+    <select id="selectRyProposalCountryList" parameterType="RyProposalCountry" resultMap="RyProposalCountryResult">
+        <include refid="selectRyProposalCountryVo"/>
+        <where>
+            <if test="countryCode != null  and countryCode != ''"> and country_code = #{countryCode}</if>
+            <if test="countryName != null  and countryName != ''"> and country_name like concat('%', #{countryName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectRyProposalCountryById" parameterType="String" resultMap="RyProposalCountryResult">
+        <include refid="selectRyProposalCountryVo"/>
+        where country_id = #{countryId}
+    </select>
+
+    <insert id="insertRyProposalCountry" parameterType="RyProposalCountry">
+        insert into ry_proposal_country
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="countryId != null  and countryId != ''">country_id,</if>
+            <if test="countryCode != null  and countryCode != ''">country_code,</if>
+            <if test="countryName != null  and countryName != ''">country_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="countryId != null  and countryId != ''">#{countryId},</if>
+            <if test="countryCode != null  and countryCode != ''">#{countryCode},</if>
+            <if test="countryName != null  and countryName != ''">#{countryName},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRyProposalCountry" parameterType="RyProposalCountry">
+        update ry_proposal_country
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="countryCode != null  and countryCode != ''">country_code = #{countryCode},</if>
+            <if test="countryName != null  and countryName != ''">country_name = #{countryName},</if>
+        </trim>
+        where country_id = #{countryId}
+    </update>
+
+    <delete id="deleteRyProposalCountryById" parameterType="String">
+        delete from ry_proposal_country where country_id = #{countryId}
+    </delete>
+
+    <delete id="deleteRyProposalCountryByIds" parameterType="String">
+        delete from ry_proposal_country where country_id in
+        <foreach item="countryId" collection="array" open="(" separator="," close=")">
+            #{countryId}
+        </foreach>
+    </delete>
+
+</mapper>

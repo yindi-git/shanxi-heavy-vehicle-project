@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.RyProposalMotorcycleMapper">
+    
+    <resultMap type="RyProposalMotorcycle" id="RyProposalMotorcycleResult">
+        <result property="motorcycleId"    column="motorcycle_id"    />
+        <result property="motorcycleType"    column="motorcycle_type"    />
+    </resultMap>
+
+    <sql id="selectRyProposalMotorcycleVo">
+        select motorcycle_id, motorcycle_type from ry_proposal_motorcycle
+    </sql>
+
+    <select id="selectRyProposalMotorcycleList" parameterType="RyProposalMotorcycle" resultMap="RyProposalMotorcycleResult">
+        <include refid="selectRyProposalMotorcycleVo"/>
+        <where>  
+            <if test="motorcycleType != null  and motorcycleType != ''"> and motorcycle_type = #{motorcycleType}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyProposalMotorcycleById" parameterType="String" resultMap="RyProposalMotorcycleResult">
+        <include refid="selectRyProposalMotorcycleVo"/>
+        where motorcycle_id = #{motorcycleId}
+    </select>
+        
+    <insert id="insertRyProposalMotorcycle" parameterType="RyProposalMotorcycle">
+        insert into ry_proposal_motorcycle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="motorcycleId != null  and motorcycleId != ''">motorcycle_id,</if>
+            <if test="motorcycleType != null  and motorcycleType != ''">motorcycle_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="motorcycleId != null  and motorcycleId != ''">#{motorcycleId},</if>
+            <if test="motorcycleType != null  and motorcycleType != ''">#{motorcycleType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyProposalMotorcycle" parameterType="RyProposalMotorcycle">
+        update ry_proposal_motorcycle
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="motorcycleType != null  and motorcycleType != ''">motorcycle_type = #{motorcycleType},</if>
+        </trim>
+        where motorcycle_id = #{motorcycleId}
+    </update>
+
+    <delete id="deleteRyProposalMotorcycleById" parameterType="String">
+        delete from ry_proposal_motorcycle where motorcycle_id = #{motorcycleId}
+    </delete>
+
+    <delete id="deleteRyProposalMotorcycleByIds" parameterType="String">
+        delete from ry_proposal_motorcycle where motorcycle_id in 
+        <foreach item="motorcycleId" collection="array" open="(" separator="," close=")">
+            #{motorcycleId}
+        </foreach>
+    </delete>
+    
+</mapper>

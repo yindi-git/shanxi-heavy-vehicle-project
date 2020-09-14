@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.portalintegration.mapper.SysUserAccessMapper">
+
+	<select id="checkLoginNameUnique" parameterType="String" resultType="int">
+		select count(1) from sys_user where login_name = #{LoginName}
+	</select>
+
+	<update id="updateUser" parameterType="com.ruoyi.portalintegration.model.UserAccount">
+ 		update sys_user
+ 		<set>
+			<if test="DepartmentCode != null and DepartmentCode != ''">dept_id = #{DepartmentCode},</if>
+ 			<if test="UserName != null and UserName != ''">user_name = #{UserName},</if>
+ 			<if test="UserType != null and UserType != ''">user_type = #{UserType},</if>
+ 			<if test="Email != null and Email != ''">email = #{Email},</if>
+ 			<if test="Mobile != null and Mobile != ''">phonenumber = #{Mobile},</if>
+ 			<if test="Gender != null and Gender != ''">sex = #{Gender},</if>
+ 			<if test="Password != null and Password != ''">password = #{Password},</if>
+ 			<if test="Status != null and Status != ''">status = #{Status},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where login_name = #{LoginName}
+	</update>
+
+ 	<insert id="insertUser" parameterType="com.ruoyi.portalintegration.model.UserAccount">
+ 		insert into sys_user(
+            <if test="LoginName != null and LoginName != ''">user_id,</if>
+            <if test="LoginName != null and LoginName != ''">login_name,</if>
+            <if test="DepartmentCode != null and DepartmentCode != ''">dept_id,</if>
+            <if test="UserName != null and UserName != ''">user_name,</if>
+            <if test="UserType != null and UserType != ''">user_type,</if>
+            <if test="Email != null and Email != ''">email,</if>
+            <if test="Mobile != null and Mobile != ''">phonenumber,</if>
+            <if test="gender != null and gender != ''">sex,</if>
+            <if test="Password != null and Password != ''">password,</if>
+            <if test="Status != null and Status != ''">status,</if>
+ 			create_time
+ 		)values(
+            <if test="LoginName != null and LoginName != ''">#{LoginName},</if>
+            <if test="LoginName != null and LoginName != ''">#{LoginName},</if>
+            <if test="DepartmentCode != null and DepartmentCode != ''">#{DepartmentCode},</if>
+            <if test="UserName != null and UserName != ''">#{UserName},</if>
+            <if test="UserType != null and UserType != ''">#{UserType},</if>
+            <if test="Email != null and Email != ''">#{Email},</if>
+            <if test="Mobile != null and Mobile != ''">#{Mobile},</if>
+            <if test="Gender != null and Gender != ''">#{Gender},</if>
+            <if test="Password != null and Password != ''">#{Password},</if>
+            <if test="Status != null and Status != ''">#{Status},</if>
+ 			sysdate()
+ 		)
+	</insert>
+
+
+	<select id="checkUserRoleUnique" parameterType="String" resultType="int">
+		select count(1) from sys_user_role where user_id = #{LoginName}
+	</select>
+
+	<insert id="insertUserRole" parameterType="String">
+		insert into sys_user_role (user_id,role_id) values (#{LoginName},'2');
+	</insert>
+
+	<select id="checkOrgCodeUnique" parameterType="String" resultType="int">
+		select count(1) from sys_dept where dept_id = #{OrgCode}
+	</select>
+
+	<update id="updateOriginDept" parameterType="com.ruoyi.portalintegration.model.OriginDept">
+		update sys_dept
+		<set>
+			<if test="HigherOrgCode != null and HigherOrgCode != ''">parent_id = #{HigherOrgCode},</if>
+			<if test="OrgName != null and OrgName != ''">dept_name = #{OrgName},</if>
+			<if test="EnabledState != null and EnabledState != ''">status = #{EnabledState},</if>
+			<if test="UndoFlag != null and UndoFlag != ''">del_flag = #{UndoFlag},</if>
+			update_time = sysdate()
+		</set>
+		where dept_id = #{OrgCode}
+	</update>
+
+	<update id="updateAncestors">
+		update sys_dept set ancestors = getParentList(dept_id);
+	</update>
+
+	<insert id="insertOriginDept" parameterType="com.ruoyi.portalintegration.model.OriginDept">
+		insert into sys_dept (
+			<if test="OrgCode != null and OrgCode != ''">dept_id,</if>
+			<if test="HigherOrgCode != null and HigherOrgCode != ''">parent_id,</if>
+			<if test="OrgName != null and OrgName != ''">dept_name,</if>
+			<if test="EnabledState != null and EnabledState != ''">status,</if>
+			<if test="UndoFlag != null and UndoFlag != ''">del_flag,</if>
+			create_time
+		)values(
+			<if test="OrgCode != null and OrgCode != ''">#{OrgCode},</if>
+			<if test="HigherOrgCode != null and HigherOrgCode != ''">#{HigherOrgCode},</if>
+			<if test="OrgName != null and OrgName != ''">#{OrgName},</if>
+			<if test="EnabledState != null and EnabledState != ''">#{EnabledState},</if>
+			<if test="UndoFlag != null and UndoFlag != ''">#{UndoFlag},</if>
+			create_time
+		)
+	</insert>
+
+</mapper>

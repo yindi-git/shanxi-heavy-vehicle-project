@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.co.mapper.RyCoFirstapplicantMapper">
+    
+    <resultMap type="RyCoFirstapplicant" id="RyCoFirstapplicantResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="address"    column="address"    />
+        <result property="tel"    column="tel"    />
+        <result property="creattime"    column="creatTime"    />
+        <result property="creater"    column="creater"    />
+    </resultMap>
+
+    <sql id="selectRyCoFirstapplicantVo">
+        select id, name, address, tel, creatTime, creater from ry_co_firstapplicant
+    </sql>
+
+    <select id="selectRyCoFirstapplicantList" parameterType="RyCoFirstapplicant" resultMap="RyCoFirstapplicantResult">
+        <include refid="selectRyCoFirstapplicantVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="tel != null  and tel != ''"> and tel = #{tel}</if>
+            <if test="creattime != null "> and creatTime = #{creattime}</if>
+            <if test="creater != null  and creater != ''"> and creater = #{creater}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyCoFirstapplicantById" parameterType="Long" resultMap="RyCoFirstapplicantResult">
+        <include refid="selectRyCoFirstapplicantVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRyCoFirstapplicant" parameterType="RyCoFirstapplicant" useGeneratedKeys="true" keyProperty="id">
+        insert into ry_co_firstapplicant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="address != null  and address != ''">address,</if>
+            <if test="tel != null  and tel != ''">tel,</if>
+            <if test="creattime != null ">creatTime,</if>
+            <if test="creater != null  and creater != ''">creater,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="tel != null  and tel != ''">#{tel},</if>
+            <if test="creattime != null ">#{creattime},</if>
+            <if test="creater != null  and creater != ''">#{creater},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyCoFirstapplicant" parameterType="RyCoFirstapplicant">
+        update ry_co_firstapplicant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="tel != null  and tel != ''">tel = #{tel},</if>
+            <if test="creattime != null ">creatTime = #{creattime},</if>
+            <if test="creater != null  and creater != ''">creater = #{creater},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRyCoFirstapplicantById" parameterType="Long">
+        delete from ry_co_firstapplicant where id = #{id}
+    </delete>
+
+    <delete id="deleteRyCoFirstapplicantByIds" parameterType="String">
+        delete from ry_co_firstapplicant where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

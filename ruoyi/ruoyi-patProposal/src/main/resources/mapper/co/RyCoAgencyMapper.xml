@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.co.mapper.RyCoAgencyMapper">
+    
+    <resultMap type="RyCoAgency" id="RyCoAgencyResult">
+        <result property="agencyId"    column="agency_id"    />
+        <result property="agencyName"    column="agency_name"    />
+        <result property="agencyNo"    column="agency_no"    />
+        <result property="agencycode"    column="agencyCode"    />
+        <result property="responsibleUserId"    column="responsible_user_id"    />
+        <result property="responsibleUser"    column="responsible_user"    />
+        <result property="agencyTel"    column="agency_tel"    />
+        <result property="agencyAddress"    column="agency_address"    />
+        <result property="numberOfAgency"    column="number_of_agency"    />
+        <result property="businessLicense"    column="business_license"    />
+        <result property="practiceCertificate"    column="practice_certificate"    />
+        <result property="foundedTime"    column="founded_time"    />
+        <result property="agencyLevel"    column="agency_level"    />
+        <result property="agencyStatus"    column="agency_status"    />
+    </resultMap>
+
+    <sql id="selectRyCoAgencyVo">
+        select agency_id, agency_name, agency_no, agencyCode, responsible_user_id, responsible_user, agency_tel, agency_address, number_of_agency, business_license, practice_certificate, founded_time, agency_level, agency_status from ry_co_agency
+    </sql>
+
+    <select id="selectRyCoAgencyList" parameterType="RyCoAgency" resultMap="RyCoAgencyResult">
+        <include refid="selectRyCoAgencyVo"/>
+        <where>  
+            <if test="agencyName != null  and agencyName != ''"> and agency_name like concat('%', #{agencyName}, '%')</if>
+            <if test="agencyNo != null  and agencyNo != ''"> and agency_no = #{agencyNo}</if>
+            <if test="agencycode != null  and agencycode != ''"> and agencyCode = #{agencycode}</if>
+            <if test="responsibleUserId != null  and responsibleUserId != ''"> and responsible_user_id = #{responsibleUserId}</if>
+            <if test="responsibleUser != null  and responsibleUser != ''"> and responsible_user = #{responsibleUser}</if>
+            <if test="agencyTel != null  and agencyTel != ''"> and agency_tel = #{agencyTel}</if>
+            <if test="agencyAddress != null  and agencyAddress != ''"> and agency_address = #{agencyAddress}</if>
+            <if test="numberOfAgency != null "> and number_of_agency = #{numberOfAgency}</if>
+            <if test="businessLicense != null  and businessLicense != ''"> and business_license = #{businessLicense}</if>
+            <if test="practiceCertificate != null  and practiceCertificate != ''"> and practice_certificate = #{practiceCertificate}</if>
+            <if test="foundedTime != null  and foundedTime != ''"> and founded_time = #{foundedTime}</if>
+            <if test="agencyLevel != null  and agencyLevel != ''"> and agency_level = #{agencyLevel}</if>
+            <if test="agencyStatus != null "> and agency_status = #{agencyStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectAllRyCoAgencyList"  resultMap="RyCoAgencyResult">
+        <include refid="selectRyCoAgencyVo"/>
+    </select>
+    
+    <select id="selectRyCoAgencyById" parameterType="Integer" resultMap="RyCoAgencyResult">
+        <include refid="selectRyCoAgencyVo"/>
+        where agency_id = #{agencyId}
+    </select>
+        
+    <insert id="insertRyCoAgency" parameterType="RyCoAgency" useGeneratedKeys="true" keyProperty="agencyId">
+        insert into ry_co_agency
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="agencyName != null  and agencyName != ''">agency_name,</if>
+            <if test="agencyNo != null  and agencyNo != ''">agency_no,</if>
+            <if test="agencycode != null  and agencycode != ''">agencyCode,</if>
+            <if test="responsibleUserId != null  and responsibleUserId != ''">responsible_user_id,</if>
+            <if test="responsibleUser != null  and responsibleUser != ''">responsible_user,</if>
+            <if test="agencyTel != null  and agencyTel != ''">agency_tel,</if>
+            <if test="agencyAddress != null  and agencyAddress != ''">agency_address,</if>
+            <if test="numberOfAgency != null ">number_of_agency,</if>
+            <if test="businessLicense != null  and businessLicense != ''">business_license,</if>
+            <if test="practiceCertificate != null  and practiceCertificate != ''">practice_certificate,</if>
+            <if test="foundedTime != null  and foundedTime != ''">founded_time,</if>
+            <if test="agencyLevel != null  and agencyLevel != ''">agency_level,</if>
+            <if test="agencyStatus != null ">agency_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="agencyName != null  and agencyName != ''">#{agencyName},</if>
+            <if test="agencyNo != null  and agencyNo != ''">#{agencyNo},</if>
+            <if test="agencycode != null  and agencycode != ''">#{agencycode},</if>
+            <if test="responsibleUserId != null  and responsibleUserId != ''">#{responsibleUserId},</if>
+            <if test="responsibleUser != null  and responsibleUser != ''">#{responsibleUser},</if>
+            <if test="agencyTel != null  and agencyTel != ''">#{agencyTel},</if>
+            <if test="agencyAddress != null  and agencyAddress != ''">#{agencyAddress},</if>
+            <if test="numberOfAgency != null ">#{numberOfAgency},</if>
+            <if test="businessLicense != null  and businessLicense != ''">#{businessLicense},</if>
+            <if test="practiceCertificate != null  and practiceCertificate != ''">#{practiceCertificate},</if>
+            <if test="foundedTime != null  and foundedTime != ''">#{foundedTime},</if>
+            <if test="agencyLevel != null  and agencyLevel != ''">#{agencyLevel},</if>
+            <if test="agencyStatus != null ">#{agencyStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyCoAgency" parameterType="RyCoAgency">
+        update ry_co_agency
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="agencyName != null  and agencyName != ''">agency_name = #{agencyName},</if>
+            <if test="agencyNo != null  and agencyNo != ''">agency_no = #{agencyNo},</if>
+            <if test="agencycode != null  and agencycode != ''">agencyCode = #{agencycode},</if>
+            <if test="responsibleUserId != null  and responsibleUserId != ''">responsible_user_id = #{responsibleUserId},</if>
+            <if test="responsibleUser != null  and responsibleUser != ''">responsible_user = #{responsibleUser},</if>
+            <if test="agencyTel != null  and agencyTel != ''">agency_tel = #{agencyTel},</if>
+            <if test="agencyAddress != null  and agencyAddress != ''">agency_address = #{agencyAddress},</if>
+            <if test="numberOfAgency != null ">number_of_agency = #{numberOfAgency},</if>
+            <if test="businessLicense != null  and businessLicense != ''">business_license = #{businessLicense},</if>
+            <if test="practiceCertificate != null  and practiceCertificate != ''">practice_certificate = #{practiceCertificate},</if>
+            <if test="foundedTime != null  and foundedTime != ''">founded_time = #{foundedTime},</if>
+            <if test="agencyLevel != null  and agencyLevel != ''">agency_level = #{agencyLevel},</if>
+            <if test="agencyStatus != null ">agency_status = #{agencyStatus},</if>
+        </trim>
+        where agency_id = #{agencyId}
+    </update>
+
+    <delete id="deleteRyCoAgencyById" parameterType="Integer">
+        delete from ry_co_agency where agency_id = #{agencyId}
+    </delete>
+
+    <delete id="deleteRyCoAgencyByIds" parameterType="String">
+        delete from ry_co_agency where agency_id in 
+        <foreach item="agencyId" collection="array" open="(" separator="," close=")">
+            #{agencyId}
+        </foreach>
+    </delete>
+    
+</mapper>

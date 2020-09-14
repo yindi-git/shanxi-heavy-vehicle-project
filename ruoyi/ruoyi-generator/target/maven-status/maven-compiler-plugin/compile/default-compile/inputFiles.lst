@@ -1,0 +1,13 @@
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\config\GenConfig.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\service\impl\GenTableServiceImpl.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\domain\GenTable.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\util\GenUtils.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\util\VelocityUtils.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\controller\GenController.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\service\IGenTableColumnService.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\service\IGenTableService.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\util\VelocityInitializer.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\mapper\GenTableColumnMapper.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\mapper\GenTableMapper.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\service\impl\GenTableColumnServiceImpl.java
+C:\F\ruoyi\ruoyi-generator\src\main\java\com\ruoyi\generator\domain\GenTableColumn.java

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.co.mapper.RyCoBudgetMapper">
+
+    <resultMap type="RyCoBudget" id="RyCoBudgetResult">
+        <result property="budgetid"    column="budgetId"    />
+        <result property="applicantMain"    column="applicant_main"    />
+        <result property="applicantCode"    column="applicant_code"    />
+        <result property="budgetYear"    column="budget_year"    />
+        <result property="businessName"    column="business_name"    />
+        <result property="budgetCode"    column="budget_code"    />
+        <result property="budgetLimit"    column="budget_limit"    />
+        <result property="businessDescribe"    column="Business_describe"    />
+        <result property="costCode"    column="cost_code"    />
+        <result property="costProject"    column="cost_project"    />
+        <result property="remark"    column="remark"    />
+        <result property="operator"    column="operator"    />
+        <result property="budgetExecute"    column="budget_execute"    />
+        <result property="executeRate"    column="execute_rate"    />
+        <result property="operatTime"    column="operat_time"    />
+    </resultMap>
+
+    <sql id="selectRyCoBudgetVo">
+        select budgetId, applicant_main, applicant_code, budget_year, business_name, budget_code, budget_limit, Business_describe, cost_code, cost_project, remark, operator, budget_execute, execute_rate, operat_time from ry_co_budget
+    </sql>
+
+    <select id="selectRyCoBudgetList" parameterType="RyCoBudget" resultMap="RyCoBudgetResult">
+        <include refid="selectRyCoBudgetVo"/>
+        <where>
+            <if test="applicantMain != null  and applicantMain != ''"> and applicant_main = #{applicantMain}</if>
+            <if test="applicantCode != null  and applicantCode != ''"> and applicant_code = #{applicantCode}</if>
+            <if test="budgetYear != null  and budgetYear != ''"> and budget_year = #{budgetYear}</if>
+            <if test="businessName != null  and businessName != ''"> and business_name like concat('%', #{businessName}, '%')</if>
+            <if test="budgetCode != null  and budgetCode != ''"> and budget_code = #{budgetCode}</if>
+            <if test="budgetLimit != null "> and budget_limit = #{budgetLimit}</if>
+            <if test="businessDescribe != null  and businessDescribe != ''"> and Business_describe = #{businessDescribe}</if>
+            <if test="costCode != null  and costCode != ''"> and cost_code = #{costCode}</if>
+            <if test="costProject != null  and costProject != ''"> and cost_project = #{costProject}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="budgetExecute != null  and budgetExecute != ''"> and budget_execute = #{budgetExecute}</if>
+            <if test="executeRate != null "> and execute_rate = #{executeRate}</if>
+            <if test="operatTime != null "> and operat_time = #{operatTime}</if>
+        </where>
+    </select>
+
+    <select id="selectRyCoBudgetById" parameterType="Integer" resultMap="RyCoBudgetResult">
+        <include refid="selectRyCoBudgetVo"/>
+        where budgetId = #{budgetid}
+    </select>
+
+    <select id="selectAllBudgetList" resultMap="RyCoBudgetResult">
+        <include refid="selectRyCoBudgetVo"/>
+    </select>
+
+    <insert id="insertRyCoBudget" parameterType="RyCoBudget" useGeneratedKeys="true" keyProperty="budgetid">
+        insert into ry_co_budget
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applicantMain != null  and applicantMain != ''">applicant_main,</if>
+            <if test="applicantCode != null  and applicantCode != ''">applicant_code,</if>
+            <if test="budgetYear != null  and budgetYear != ''">budget_year,</if>
+            <if test="businessName != null  and businessName != ''">business_name,</if>
+            <if test="budgetCode != null  and budgetCode != ''">budget_code,</if>
+            <if test="budgetLimit != null ">budget_limit,</if>
+            <if test="businessDescribe != null  and businessDescribe != ''">Business_describe,</if>
+            <if test="costCode != null  and costCode != ''">cost_code,</if>
+            <if test="costProject != null  and costProject != ''">cost_project,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="operator != null  and operator != ''">operator,</if>
+            <if test="budgetExecute != null  and budgetExecute != ''">budget_execute,</if>
+            <if test="executeRate != null ">execute_rate,</if>
+            <if test="operatTime != null ">operat_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applicantMain != null  and applicantMain != ''">#{applicantMain},</if>
+            <if test="applicantCode != null  and applicantCode != ''">#{applicantCode},</if>
+            <if test="budgetYear != null  and budgetYear != ''">#{budgetYear},</if>
+            <if test="businessName != null  and businessName != ''">#{businessName},</if>
+            <if test="budgetCode != null  and budgetCode != ''">#{budgetCode},</if>
+            <if test="budgetLimit != null ">#{budgetLimit},</if>
+            <if test="businessDescribe != null  and businessDescribe != ''">#{businessDescribe},</if>
+            <if test="costCode != null  and costCode != ''">#{costCode},</if>
+            <if test="costProject != null  and costProject != ''">#{costProject},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="operator != null  and operator != ''">#{operator},</if>
+            <if test="budgetExecute != null  and budgetExecute != ''">#{budgetExecute},</if>
+            <if test="executeRate != null ">#{executeRate},</if>
+            <if test="operatTime != null ">#{operatTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRyCoBudget" parameterType="RyCoBudget">
+        update ry_co_budget
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applicantMain != null  and applicantMain != ''">applicant_main = #{applicantMain},</if>
+            <if test="applicantCode != null  and applicantCode != ''">applicant_code = #{applicantCode},</if>
+            <if test="budgetYear != null  and budgetYear != ''">budget_year = #{budgetYear},</if>
+            <if test="businessName != null  and businessName != ''">business_name = #{businessName},</if>
+            <if test="budgetCode != null  and budgetCode != ''">budget_code = #{budgetCode},</if>
+            <if test="budgetLimit != null ">budget_limit = #{budgetLimit},</if>
+            <if test="businessDescribe != null  and businessDescribe != ''">Business_describe = #{businessDescribe},</if>
+            <if test="costCode != null  and costCode != ''">cost_code = #{costCode},</if>
+            <if test="costProject != null  and costProject != ''">cost_project = #{costProject},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="operator != null  and operator != ''">operator = #{operator},</if>
+            <if test="budgetExecute != null  and budgetExecute != ''">budget_execute = #{budgetExecute},</if>
+            <if test="executeRate != null ">execute_rate = #{executeRate},</if>
+            <if test="operatTime != null ">operat_time = #{operatTime},</if>
+        </trim>
+        where budgetId = #{budgetid}
+    </update>
+
+    <delete id="deleteRyCoBudgetById" parameterType="Integer">
+        delete from ry_co_budget where budgetId = #{budgetid}
+    </delete>
+
+    <delete id="deleteRyCoBudgetByIds" parameterType="String">
+        delete from ry_co_budget where budgetId in
+        <foreach item="budgetid" collection="array" open="(" separator="," close=")">
+            #{budgetid}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('专利运用解押列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>专利提案编号：</label>
+                                <input type="text" name="proposalId"/>
+                            </li>
+                            <li>
+                                <label>专利提案名称：</label>
+                                <input type="text" name="proposalName"/>
+                            </li>
+<!--                             <li>
+                                <label>0是删除，1是正常：</label>
+                                <input type="text" name="isDelete"/>
+                            </li> -->
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="release:releases:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="release:releases:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="release:releases:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="release:releases:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('release:releases:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('release:releases:remove')}]];
+        var prefix = ctx + "release/releases";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "专利运用解押",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'permitId', 
+                    title: '专利质押ID',
+                    visible: false
+                },
+                {
+                    field: 'proposalId', 
+                    title: '专利提案编号'
+                },
+                {
+                    field: 'proposalName', 
+                    title: '专利提案名称'
+                },
+/*                 {
+                    field: 'employeeInvention', 
+                    title: '职务发明(0是,1否,默认0) 职务发明(0是,1否,默认0)'
+                }, */
+                {
+                    field: 'applicantId', 
+                    title: '申请人'
+                },
+                {
+                    field: 'patentee', 
+                    title: '专利权人'
+                },
+                {
+                    field: 'reason', 
+                    title: '解押原因'
+                },
+                {
+                    field: 'remark', 
+                    title: '备注'
+                },
+/*                 {
+                    field: 'isDelete', 
+                    title: '0是删除，1是正常'
+                }, */
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.permitId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.permitId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

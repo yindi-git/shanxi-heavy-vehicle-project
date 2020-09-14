@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-agency-edit" th:object="${ryCoSynergy}">
+        <input name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专利提案名称：</label>
+            <div class="col-sm-8">
+                <input name="proposalName" th:field="*{proposalPat.proposalName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人：</label>
+            <div class="col-sm-8">
+                <input name="createBy" th:field="*{proposalPat.applicantId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">第一申请人地址：</label>
+            <div class="col-sm-8">
+                <input name="samedayapply" th:field="*{samedayapply}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发明人：</label>
+            <div class="col-sm-8">
+                <input name="samedayapply" th:field="*{samedayapply}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">第一发明人：</label>
+            <div class="col-sm-8">
+                <input name="createTime" th:field="*{createTime}" class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人：</label>
+            <div class="col-sm-8">
+                <input name="createTime" th:field="*{createTime}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理机构：</label>
+            <div class="col-sm-8">
+                <input name="agencyid" th:field="*{agencyid}" class="form-control" type="text">
+            </div>
+        </div>
+      <!--  <div class="form-group">
+            <label class="col-sm-3 control-label">联系电话：</label>
+            <div class="col-sm-8">
+                <input name="tel" th:field="*{tel}" class="form-control" type="text">
+            </div>
+        </div>-->
+<!--        <div class="form-group">
+            <label class="col-sm-3 control-label">提报单位：</label>
+            <div class="col-sm-8">
+                <input name="moreinfo" th:field="*{moreinfo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">技术交底书：</label>
+            <div class="col-sm-8">
+                <input name="moreinfo" th:field="*{moreinfo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专利名称：</label>
+            <div class="col-sm-8">
+                <input name="agencyname" th:field="*{moreinfo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专利编号：</label>
+            <div class="col-sm-8">
+                <input name="agencyid" th:field="*{moreinfo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专利类型：</label>
+            <div class="col-sm-8">
+                <input name="agencyid" th:field="*{moreinfo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请国家：</label>
+            <div class="col-sm-8">
+                <input name="agencyid" th:field="*{moreinfo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">代理机构：</label>
+            <div class="col-sm-8">
+                <input name="agencyid" th:field="*{agencyid}" class="form-control" type="text">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">当前处理人：</label>
+            <div class="col-sm-8">
+                <input name="agencyid" th:field="*{moreinfo}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">预算编号：</label>
+            <div class="col-sm-8">
+                <input name="agencyid" th:field="*{moreinfo}" class="form-control" type="text">
+            </div>
+        </div>-->
+        <div class="form-group">
+            <label class="col-sm-3 control-label">办理时间：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <!--
+                                        <input name="creattime" th:value="${#dates.format(RyCoSynergy.creattime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">下个节点完成时间：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <!--
+                                        <input name="creattime" th:value="${#dates.format(RyCoSynergy.creattime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">电话：</label>
+            <div class="col-sm-8">
+                <!--  <input name="tel" th:field="*{tel}" class="form-control" type="text">-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专利文号：</label>
+            <div class="col-sm-8">
+                <!--<input name="agencyno" th:field="*{agencyno}" class="form-control" type="text">-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专利编号：</label>
+            <div class="col-sm-8">
+                <!-- <input name="agencycode" th:field="*{agencycode}" class="form-control" type="text">-->
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">选择代理人：</label>
+            <div class="col-sm-4">
+                <select name="applicantId" class="form-control m-b select2-multiple" id="applicantId" th:with="Map=${@PatCommonService.getApplicant()}">
+                    <!--<option th:each="map:${Map}" th:text="${map.applicant_name}" th:value="${map.applicant_id}" ></option>-->
+<!--                    <option ></option>-->
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: select2-css" />
+<script type="text/javascript">
+    var prefix = ctx + "/synergy";
+    $("#form-agency-edit").validate({
+        focusCleanup: true
+    });
+    function getApplicant(){
+     /*var agencyid = $('input[name="agencyid"]').val();bushi zheg */
+        $.ajax({
+            type: "post",
+            data: {agencyid:$('input[name="agencyid"]').val()},
+            url: ctx +"agencyUser/selectListByAgencyId",
+            dataType: "json",
+            success: function(ProposalInventor){
+                $('#userId').empty();   //清空resText里面的所有内容
+                $('input[name="userId"]').val(ProposalInventor.userId);
+               for(var i=0;i<ProposalInventor.length;i++){
+                   var option= document.createElement("option");
+                   option.value=ProposalInventor[i].agencyUserName;
+                   option.innerText=ProposalInventor[i].agencyUserName;
+                    $("#applicantId").append(option);
+               }
+            }
+        });
+
+    }
+    window.onload = getApplicant;
+
+
+/*
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-agency-edit').serialize());
+        }
+    }
+    $("input[name='creattime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });*/
+
+
+
+   function submitHandler() {
+        var users = $('#applicantId').val();
+        $.modal.confirm("确认要提交申请吗?", function() {
+            var id = $('input[name="id"]').val();
+            console.log(id);
+            var url = prefix + "/submitApplys";
+            var data = {
+                "id": id,
+                "users": users
+            };
+            $.operate.save(url, "post", "json", data);
+            $.modal.close();        // 关闭弹窗
+            // $.table.refresh();      // 刷新表格
+        });
+    }
+    // 请求结束后回调刷新父页面的表格
+    function refreshParentPageTable() {
+        window.parent.$.table.refresh();
+    }
+
+/*    function submitHandler() {
+        if ($.validate.form()) {
+            if ($('textarea[name="comment"]').val()) {
+                $('input[name="p_COM_comment"]').val($('textarea[name="comment"]').val());
+            }
+            var taskId = [[${taskId}]];
+            $.operate.save(prefix + "/submitApplys" /!*+ taskId*!/, $('#form-pat-edit').serialize());
+        }
+    }*/
+
+
+
+</script>
+</body>
+</html>

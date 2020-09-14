@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增专利提案相关')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-pat-add">
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">专利名称：</label>
+            <div class="col-sm-4">
+                <input name="proposalName" id="proposalName" class="form-control" type="text" onblur="checkProposalName();"  required>
+            </div>
+
+            <label class="col-sm-2 control-label is-required">职务发明：</label>
+            <div class="col-sm-4">
+                <div class="radio-box">
+                    <input type="radio" id="employeeInvention0" name="employeeInvention"  value="0" checked="checked">
+                    <label for="employeeInvention0">是</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="employeeInvention1" name="employeeInvention"  value="1">
+                    <label for="employeeInvention1">否</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">申请人：</label>
+            <div class="col-sm-4">
+                <select name="applicantId" class="form-control m-b" th:with="Map=${@PatCommonService.getApplicant()}">
+                    <option th:each="map:${Map}" th:text="${map.applicant_name}" th:value="${map.applicant_id}" ></option>
+                </select>
+            </div>
+            <label class="col-sm-2 control-label is-required">提报单位：</label>
+            <div class="col-sm-4">
+                <input name="deptId" class="form-control" type="text"  required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">专利类型：</label>
+            <div class="col-sm-4">
+                <select name="typeId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalType()}" multiple="multiple" >
+                    <option th:each="map:${Map}" th:text="${map.type_name}" th:value="${map.type_id}" ></option>
+                </select>
+            </div>
+            <label class="col-sm-2 control-label is-required">重要度：</label>
+            <div class="col-sm-4">
+                <select name="importanceId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalImportance()}">
+                    <option th:each="map:${Map}" th:text="${map.importance_level}" th:value="${map.importance_id}" ></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">提案日期：</label>
+            <div class="col-sm-4">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input name="launchTime" class="form-control" placeholder="yyyy-MM-dd" type="text"  >
+                </div>
+            </div>
+            <label class="col-sm-2 control-label is-required">所属项目：</label>
+            <div class="col-sm-4">
+                <select name="projectId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalProject()}">
+                    <option th:each="map:${Map}" th:text="${map.project_name}" th:value="${map.project_id}" ></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">车型类别：</label>
+            <div class="col-sm-4">
+                <select name="motorcycleId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalMotorcycle()}">
+                    <option th:each="map:${Map}" th:text="${map.motorcycle_type}" th:value="${map.motorcycle_id}" ></option>
+                </select>
+            </div>
+            <label class="col-sm-2 control-label is-required">申请国家：</label>
+            <div class="col-sm-4">
+                <select name="countryId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalCountry()}">
+                    <option th:each="map:${Map}" th:text="${map.country_name}" th:value="${map.country_id}"  th:selected="${map.country_code=='CN'}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">技术领域：</label>
+            <div class="col-sm-4">
+                <select name="technicalId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalTechnical()}">
+                    <option th:each="map:${Map}" th:text="${map.technical_desc}" th:value="${map.technical_id}" ></option>
+                </select>
+            </div>
+            <label class="col-sm-2 control-label is-required">提前公开：</label>
+            <div class="col-sm-4">
+                <div class="radio-box">
+                    <input type="radio" id="isOpen0" name="isOpen"  value="0">
+                    <label for="isOpen0">是</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="isOpen1" name="isOpen"  value="1" checked="checked">
+                    <label for="isOpen1">否</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">快速预审：</label>
+            <div class="col-sm-4">
+                <div class="radio-box">
+                    <input type="radio" id="isPreliminary0" name="isPreliminary"  value="0">
+                    <label for="isPreliminary0">是</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="isPreliminary1" name="isPreliminary"  value="1" checked="checked">
+                    <label for="isPreliminary1">否</label>
+                </div>
+            </div>
+            <label class="col-sm-2 control-label is-required">联系人：</label>
+            <div class="col-sm-4">
+                <input name="contactsId" class="form-control" type="text"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">背景技术：</label>
+            <div class="col-sm-4">
+                <textarea name="backTech" class="form-control"  required></textarea>
+            </div>
+            <label class="col-sm-2 control-label is-required">内容概要：</label>
+            <div class="col-sm-4">
+                <textarea name="contentSummary" class="form-control"  required></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">附件：</label>
+            <div class="col-sm-8" id="fileForm">
+                <input name="filePath" id="filePath" class="form-control" type="file">
+                <div class="btn-group-sm" role="group" id="addAttachInput">
+                    <a class="btn btn-success" onclick="addAttachBtn()" >
+                        <i class="fa fa-plus"></i> 追加附件
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" id="inventorId">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        发明人
+                    </div>
+                    <div class="ibox-content" id="contentForm">
+                        <form role="form" class="form-horizontal m-t">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label is-required">姓名：</label>
+                                <div class="col-sm-4">
+                                    <input name="userName" class="form-control isName" type="text"  required>
+                                </div>
+                                <label class="col-sm-2 control-label is-required">工号：</label>
+                                <div class="col-sm-4">
+                                    <input name="userId" class="form-control" type="text"  required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label is-required" >手机：</label>
+                                <div class="col-sm-4">
+                                    <input name="phone" class="form-control isPhone" type="text"  required>
+                                </div>
+                                <label class="col-sm-2 control-label is-required">邮箱：</label>
+                                <div class="col-sm-4">
+                                    <input name="email" class="form-control email" type="text"  required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label is-required">部门：</label>
+                                <div class="col-sm-4">
+                                    <input name="dept" class="form-control" type="text"  required>
+                                </div>
+                                <label class="col-sm-2 control-label is-required" style="padding-left: 16px;">贡献度：</label>
+                                <div class="col-sm-4">
+                                    <input name="contribution" class="form-control isContribution" type="text"  required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label is-required">是否第一发明人：</label>
+                                <div class="col-sm-4">
+                                    <div class="radio-box">
+                                        <input type="radio" id="isFirstInventor0" name="isFirstInventor"  value="0">
+                                        <label for="isFirstInventor0">是</label>
+                                    </div>
+                                    <div class="radio-box">
+                                        <input type="radio" id="isFirstInventor1" name="isFirstInventor"  value="1" checked="checked">
+                                        <label for="isFirstInventor1">否</label>
+                                    </div>
+                                </div>
+
+                                <label class="col-sm-2 control-label">身份证号：</label>
+                                <div class="col-sm-4">
+                                    <input name="idcard" class="form-control isIdentity" type="text">
+                                </div>
+                            </div>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="btn-group-sm" role="group" id="addinventorForm">
+                    <a class="btn btn-success" onclick="addinventorForm()">
+                        <i class="fa fa-plus"></i> 追加发明人
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">技术交底附件：</label>
+            <div class="col-sm-4">
+                <input name="technicalFile" class="form-control" type="file">
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: select2-js" />
+<script src="../ajaxfileupload.js"></script>
+<script type="text/javascript">
+    var inventorNum=1;
+    var attachFileNum=1;
+    var prefix = ctx + "patProposal"
+    $("#form-pat-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        //保存提交
+        if ($.validate.form()) {
+            var config = {
+                url: prefix + "/add",
+                type: "post",
+                dataType: "json",
+                data:  $('#form-pat-add').serialize(),
+                beforeSend: function () {
+                    $.modal.loading("正在处理中，请稍后...");
+                    $.modal.disable();
+                },
+                success: function(result) {
+                    //保存发明人
+                    successCallback(result.data);
+                }
+            };
+            $.ajax(config)
+        }
+    }
+
+    /**
+     * 保存发明人
+     */
+    function successCallback(proposalId) {
+        var inventorArr=$("#inventorId").children().find("div[class='ibox-content']");
+        if(inventorArr.length>0){
+            for(var i=0;i<inventorArr.length;i++){
+                var obj=new Object();
+                obj.proposalId=proposalId;
+                var objArr=$(inventorArr[i]).find("input[type='text']");
+                for(var j=0;j<objArr.length;j++){
+                    var key1=$(objArr[j]).attr("name");
+                    var value=$(objArr[j]).val();
+                    obj[key1]=value;
+                }
+                var config = {
+                    url: ctx + "patproposal/inventor/add",
+                    type: "post",
+                    dataType: "json",
+                    data:  obj,
+                    beforeSend: function () {
+                        $.modal.loading("正在处理中，请稍后...");
+                        $.modal.disable();
+                    },
+                    success: function(result) {
+                        //保存附件
+                        successCallBackAttach(proposalId);
+                    }
+                };
+                $.ajax(config)
+            }
+        }
+    }
+
+    /***
+     * 保存附图附件
+     */
+    function successCallBackAttach(proposalId){
+        var attachArr=new Array();
+        var arr=$("#fileForm").find("input[type='file']");
+        for(var i=0;i<arr.length;i++){
+            var fileId=$(arr[i]).attr('id');
+            attachArr.push(fileId);
+        }
+        $.ajaxFileUpload({
+            method:'POST',
+            url: ctx + "patproposal/attach/upload",
+            secureuri:false,
+            fileElementId:attachArr,
+            data:{'proposalId':proposalId,attachType:2},
+            success:function(){
+                //继续上传技术交底附件
+                $.ajaxFileUpload({
+                    method:'POST',
+                    url: ctx + "patproposal/attach/upload",
+                    secureuri:false,
+                    fileElementId:"technicalFile",
+                    data:{'proposalId':proposalId,attachType:1},
+                    success:function(result){
+                        var parent = window.parent;
+                        if (parent.table.options.type == 0) {
+                            $.modal.close();
+                            parent.$.modal.msgSuccess(result.msg);
+                            parent.$.table.refresh();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    $("input[name='launchTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    function addinventorForm(){
+        ++inventorNum;
+        var formNum='contentForm'+inventorNum;
+        var formContent=$("#contentForm").html();
+        var htmlForm="<div class=\"ibox float-e-margins\" id="+formNum+">" +
+            "      <div class=\"ibox-title\">" +
+            // "                 发明人" + (inventorNum) +
+            "                 发明人" +
+            "            <div class=\"ibox-tools\">" +
+            "                 <a class=\"close-link\" onclick='delinventorForm("+formNum+");' title='删除该发明人'>" +
+            "                     <i class=\"fa fa-times\"></i>" +
+            "                 </a>" +
+            "           </div>" +
+            "      </div>"+
+            "      <div class=\"ibox-content\" >"+ formContent +
+            "      </div>" +
+            "</div>";
+        $("#addinventorForm").before(htmlForm);
+    }
+
+    function delinventorForm(param){
+        $("#"+param.id).remove();
+    }
+
+    function checkProposalName(){
+        var proposalName=$("#proposalName").val();
+        var config = {
+            url: prefix + "/checkProposalName",
+            type: "post",
+            dataType: "json",
+            data: {"proposalName":proposalName},
+            success: function(result) {
+                if(result.data>0){
+                    $.modal.msg(proposalName+"已存在");
+                    return;
+                }
+            }
+        };
+        $.ajax(config)
+    }
+
+    function addAttachBtn(){
+        ++attachFileNum;
+        $("#addAttachInput").before(
+            '<div id="inputFile'+attachFileNum+'">' +
+            '   <input class="form-control" style="width: 95%;display:inline-block;" type="file" name="filePath" id="filePath'+attachFileNum+'">'+
+            '   <a class="close-link" onclick="delAttachBtn(inputFile'+attachFileNum+');" title="删除该附件">' +
+            '       <i class="fa fa-times"></i>' +
+            '   </a>' +
+            '</div>');
+    }
+
+    /**
+     *  删除附件
+     */
+    function delAttachBtn(param){
+        $("#"+param.id).remove();
+    }
+</script>
+</body>
+</html>

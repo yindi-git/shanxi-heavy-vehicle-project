@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.RyProposalTechnicalMapper">
+    
+    <resultMap type="RyProposalTechnical" id="RyProposalTechnicalResult">
+        <result property="technicalId"    column="technical_id"    />
+        <result property="technicalDesc"    column="technical_desc"    />
+    </resultMap>
+
+    <sql id="selectRyProposalTechnicalVo">
+        select technical_id, technical_desc from ry_proposal_technical
+    </sql>
+
+    <select id="selectRyProposalTechnicalList" parameterType="RyProposalTechnical" resultMap="RyProposalTechnicalResult">
+        <include refid="selectRyProposalTechnicalVo"/>
+        <where>  
+            <if test="technicalDesc != null  and technicalDesc != ''"> and technical_desc = #{technicalDesc}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyProposalTechnicalById" parameterType="String" resultMap="RyProposalTechnicalResult">
+        <include refid="selectRyProposalTechnicalVo"/>
+        where technical_id = #{technicalId}
+    </select>
+        
+    <insert id="insertRyProposalTechnical" parameterType="RyProposalTechnical">
+        insert into ry_proposal_technical
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="technicalId != null  and technicalId != ''">technical_id,</if>
+            <if test="technicalDesc != null  and technicalDesc != ''">technical_desc,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="technicalId != null  and technicalId != ''">#{technicalId},</if>
+            <if test="technicalDesc != null  and technicalDesc != ''">#{technicalDesc},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyProposalTechnical" parameterType="RyProposalTechnical">
+        update ry_proposal_technical
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="technicalDesc != null  and technicalDesc != ''">technical_desc = #{technicalDesc},</if>
+        </trim>
+        where technical_id = #{technicalId}
+    </update>
+
+    <delete id="deleteRyProposalTechnicalById" parameterType="String">
+        delete from ry_proposal_technical where technical_id = #{technicalId}
+    </delete>
+
+    <delete id="deleteRyProposalTechnicalByIds" parameterType="String">
+        delete from ry_proposal_technical where technical_id in 
+        <foreach item="technicalId" collection="array" open="(" separator="," close=")">
+            #{technicalId}
+        </foreach>
+    </delete>
+    
+</mapper>

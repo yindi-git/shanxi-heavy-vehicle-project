@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.RyProposalTypeMapper">
+    
+    <resultMap type="RyProposalType" id="RyProposalTypeResult">
+        <result property="typeId"    column="type_id"    />
+        <result property="typeName"    column="type_name"    />
+        <result property="typeNumForProposal"    column="type_num_for_proposal"    />
+        <result property="protectionObject"    column="protection_object"    />
+    </resultMap>
+
+    <sql id="selectRyProposalTypeVo">
+        select type_id, type_name, type_num_for_proposal, protection_object from ry_proposal_type
+    </sql>
+
+    <select id="selectRyProposalTypeList" parameterType="RyProposalType" resultMap="RyProposalTypeResult">
+        <include refid="selectRyProposalTypeVo"/>
+        <where>  
+            <if test="typeName != null  and typeName != ''"> and type_name like concat('%', #{typeName}, '%')</if>
+            <if test="typeNumForProposal != null  and typeNumForProposal != ''"> and type_num_for_proposal = #{typeNumForProposal}</if>
+            <if test="protectionObject != null  and protectionObject != ''"> and protection_object = #{protectionObject}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyProposalTypeById" parameterType="String" resultMap="RyProposalTypeResult">
+        <include refid="selectRyProposalTypeVo"/>
+        where type_id = #{typeId}
+    </select>
+        
+    <insert id="insertRyProposalType" parameterType="RyProposalType" useGeneratedKeys="true" keyProperty="typeId">
+        insert into ry_proposal_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="typeName != null  and typeName != ''">type_name,</if>
+            <if test="typeNumForProposal != null  and typeNumForProposal != ''">type_num_for_proposal,</if>
+            <if test="protectionObject != null  and protectionObject != ''">protection_object,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="typeName != null  and typeName != ''">#{typeName},</if>
+            <if test="typeNumForProposal != null  and typeNumForProposal != ''">#{typeNumForProposal},</if>
+            <if test="protectionObject != null  and protectionObject != ''">#{protectionObject},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyProposalType" parameterType="RyProposalType">
+        update ry_proposal_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="typeName != null  and typeName != ''">type_name = #{typeName},</if>
+            <if test="typeNumForProposal != null  and typeNumForProposal != ''">type_num_for_proposal = #{typeNumForProposal},</if>
+            <if test="protectionObject != null  and protectionObject != ''">protection_object = #{protectionObject},</if>
+        </trim>
+        where type_id = #{typeId}
+    </update>
+
+    <delete id="deleteRyProposalTypeById" parameterType="String">
+        delete from ry_proposal_type where type_id = #{typeId}
+    </delete>
+
+    <delete id="deleteRyProposalTypeByIds" parameterType="String">
+        delete from ry_proposal_type where type_id in 
+        <foreach item="typeId" collection="array" open="(" separator="," close=")">
+            #{typeId}
+        </foreach>
+    </delete>
+    
+</mapper>

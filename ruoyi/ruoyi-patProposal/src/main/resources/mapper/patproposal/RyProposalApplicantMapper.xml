@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.RyProposalApplicantMapper">
+    
+    <resultMap type="RyProposalApplicant" id="RyProposalApplicantResult">
+        <result property="applicantId"    column="applicant_id"    />
+        <result property="applicantName"    column="applicant_name"    />
+        <result property="applicantAddr"    column="applicant_addr"    />
+        <result property="applicantCode"    column="applicant_code"    />
+    </resultMap>
+
+    <sql id="selectRyProposalApplicantVo">
+        select applicant_id, applicant_name, applicant_addr, applicant_code from ry_proposal_applicant
+    </sql>
+
+    <select id="selectRyProposalApplicantList" parameterType="RyProposalApplicant" resultMap="RyProposalApplicantResult">
+        <include refid="selectRyProposalApplicantVo"/>
+        <where>  
+            <if test="applicantName != null  and applicantName != ''"> and applicant_name like concat('%', #{applicantName}, '%')</if>
+            <if test="applicantAddr != null  and applicantAddr != ''"> and applicant_addr = #{applicantAddr}</if>
+            <if test="applicantCode != null  and applicantCode != ''"> and applicant_code = #{applicantCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyProposalApplicantById" parameterType="String" resultMap="RyProposalApplicantResult">
+        <include refid="selectRyProposalApplicantVo"/>
+        where applicant_id = #{applicantId}
+    </select>
+
+        
+    <insert id="insertRyProposalApplicant" parameterType="RyProposalApplicant">
+        insert into ry_proposal_applicant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applicantId != null ">applicant_id,</if>
+            <if test="applicantName != null  and applicantName != ''">applicant_name,</if>
+            <if test="applicantAddr != null  and applicantAddr != ''">applicant_addr,</if>
+            <if test="applicantCode != null  and applicantCode != ''">applicant_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applicantId != null ">#{applicantId},</if>
+            <if test="applicantName != null  and applicantName != ''">#{applicantName},</if>
+            <if test="applicantAddr != null  and applicantAddr != ''">#{applicantAddr},</if>
+            <if test="applicantCode != null  and applicantCode != ''">#{applicantCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyProposalApplicant" parameterType="RyProposalApplicant">
+        update ry_proposal_applicant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applicantName != null  and applicantName != ''">applicant_name = #{applicantName},</if>
+            <if test="applicantAddr != null  and applicantAddr != ''">applicant_addr = #{applicantAddr},</if>
+            <if test="applicantCode != null  and applicantCode != ''">applicant_code = #{applicantCode},</if>
+        </trim>
+        where applicant_id = #{applicantId}
+    </update>
+
+    <delete id="deleteRyProposalApplicantById" parameterType="Long">
+        delete from ry_proposal_applicant where applicant_id = #{applicantId}
+    </delete>
+
+    <delete id="deleteRyProposalApplicantByIds" parameterType="String">
+        delete from ry_proposal_applicant where applicant_id in 
+        <foreach item="applicantId" collection="array" open="(" separator="," close=")">
+            #{applicantId}
+        </foreach>
+    </delete>
+    
+</mapper>

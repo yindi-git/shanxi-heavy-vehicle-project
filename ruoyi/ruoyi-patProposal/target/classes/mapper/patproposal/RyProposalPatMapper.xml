@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.ProposalPatMapper">
+
+    <resultMap type="RyProposaPatVo" id="ProposalPatResult">
+        <result property="proposalId"    column="proposal_id"    />
+        <result property="proposalName"    column="proposal_name"    />
+        <result property="employeeInvention"    column="employee_invention"    />
+        <result property="applicantId"    column="applicant_id"    />
+        <result property="applyDeptId"    column="apply_dept_id"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="importanceId"    column="importance_id"    />
+        <result property="launchTime"    column="launch_time"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="motorcycleId"    column="motorcycle_id"    />
+        <result property="countryId"    column="country_id"    />
+        <result property="technicalId"    column="technical_id"    />
+        <result property="isOpen"    column="is_open"    />
+        <result property="isPreliminary"    column="is_preliminary"    />
+        <result property="backTech"    column="back_tech"    />
+        <result property="contentSummary"    column="content_summary"    />
+        <result property="contactsId"    column="contacts_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="proposalStatus"    column="proposal_status"    />
+        <result property="instanceId"    column="instance_id"    />
+        <association property="bizTodoItem"    column="instance_id" javaType="BizTodoItem" resultMap="BizTodoItemResult" />
+        <collection  property="actHiomment"   javaType="ActHiomment"        resultMap="ActHiommentResult" />
+    </resultMap>
+
+    <resultMap type="BizTodoItem" id="BizTodoItemResult">
+        <result property="id"    column="id"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="itemContent"    column="item_content"    />
+        <result property="module"    column="module"    />
+        <result property="instanceId"    column="instance_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="nodeName"    column="node_name"    />
+        <result property="isView"    column="is_view"    />
+        <result property="isHandle"    column="is_handle"    />
+        <result property="todoUserId"    column="todo_user_id"    />
+        <result property="todoUserName"    column="todo_user_name"    />
+        <result property="handleUserId"    column="handle_user_id"    />
+        <result property="handleUserName"    column="handle_user_name"    />
+        <result property="todoTime"    column="todo_time"    />
+        <result property="handleTime"    column="handle_time"    />
+    </resultMap>
+
+    <resultMap type="actHiomment" id="ActHiommentResult">
+       <!-- <result property="id"    column="ID_"    />
+        <result property="type"    column="TYPE_"    />
+        <result property="time"    column="TIME_"    />-->
+        <result property="userId"    column="USER_ID_"    />
+    <!--    <result property="taskId"    column="TASK_ID_"    />
+        <result property="procInstId"    column="PROC_INST_ID_"    />
+        <result property="action"    column="ACTION_"    />-->
+        <result property="message"    column="MESSAGE_"    />
+        <!--<result property="fullMsg"    column="FULL_MSG_"    />-->
+    </resultMap>
+
+    <sql id="selectProposalPatVo">
+        select proposal_id, proposal_name, employee_invention, applicant_id, apply_dept_id, type_id, importance_id, launch_time, project_id, motorcycle_id, country_id, technical_id, is_open, is_preliminary, back_tech, content_summary, contacts_id, remark, create_time, create_by, proposal_status, instance_id from ry_proposal_pat
+    </sql>
+
+    <select id="checkProposalName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1) as proposalNameNum from ry_proposal_pat t where t.proposal_name=#{proposalName}
+    </select>
+
+    <select id="selectProposalPatList" parameterType="ProposalPat" resultMap="ProposalPatResult">
+       <!-- <include refid="selectProposalPatVo"/>-->
+       select
+        b.id,
+        b.task_id,
+        b.task_name,
+        CASE MIN(b.is_view) WHEN '1' THEN '已归档' WHEN '0' THEN b.node_name ELSE '待提交'  END AS is_view ,
+        b.node_name,
+        p.proposal_id, p.proposal_name, p.employee_invention,
+        p.applicant_id, p.apply_dept_id, p.type_id, p.importance_id,
+        p.launch_time, p.project_id, p.motorcycle_id, p.country_id,
+        p.technical_id, p.is_open, p.is_preliminary, p.back_tech,
+        p.content_summary, p.contacts_id, p.remark, p.create_time, p.create_by,
+        p.proposal_status, p.instance_id from ry_proposal_pat p
+        left join biz_todo_item b
+        on p.instance_id=b.instance_id
+        <where>
+            <if test="proposalId != null  and proposalId != ''"> and p.proposal_id = #{proposalId}</if>
+            <if test="proposalName != null  and proposalName != ''"> and p.proposal_name like concat('%', #{proposalName}, '%')</if>
+            <if test="employeeInvention != null  and employeeInvention != ''"> and p.employee_invention = #{employeeInvention}</if>
+           <!-- <if test="applicantId != null  and applicantId != ''"> and p.applicant_id = #{applicantId}</if>-->
+            <if test="applyDeptId != null  and applyDeptId != ''"> and p.apply_dept_id = #{applyDeptId}</if>
+            <if test="typeId != null  and typeId != ''"> and type_id = #{typeId}</if>
+            <if test="importanceId != null  and importanceId != ''"> and p.importance_id = #{importanceId}</if>
+            <!--<if test="launchTime != null "> and p.launch_time = #{launchTime}</if>-->
+            <if test="params.launchTimeStartTime != null and params.launchTimeStartTime != ''"> and date_format(launch_time,'%y%m%d') &gt;= date_format(#{params.launchTimeStartTime},'%y%m%d')</if>
+            <if test="params.launchTimeEndTime != null and params.launchTimeEndTime != ''"> and date_format(launch_time,'%y%m%d') &lt;=  date_format(#{params.launchTimeEndTime},'%y%m%d')</if>
+            <if test="projectId != null  and projectId != ''"> and p.project_id = #{projectId}</if>
+            <if test="motorcycleId != null  and motorcycleId != ''"> and p.motorcycle_id = #{motorcycleId}</if>
+            <if test="countryId != null  and countryId != ''"> and p.country_id = #{countryId}</if>
+            <if test="technicalId != null  and technicalId != ''"> and p.technical_id = #{technicalId}</if>
+            <if test="isOpen != null  and isOpen != ''"> and p.is_open = #{isOpen}</if>
+            <if test="isPreliminary != null  and isPreliminary != ''"> and p.is_preliminary = #{isPreliminary}</if>
+            <if test="backTech != null  and backTech != ''"> and p.back_tech = #{backTech}</if>
+            <if test="contentSummary != null  and contentSummary != ''"> and p.content_summary = #{contentSummary}</if>
+            <if test="contactsId != null  and contactsId != ''"> and p.contacts_id = #{contactsId}</if>
+            <if test="proposalStatus != null  and proposalStatus != ''"> and p.proposal_status = #{proposalStatus}</if>
+            <if test="instanceId != null  and instanceId != ''"> and p.instance_id = #{instanceId}</if>
+            <if test="createBy != null and createBy!=''">and p.create_by = #{createBy}</if>
+            and is_delete = '1'
+        </where>
+
+     GROUP  by  p.proposal_id ORDER BY p.proposal_id DESC
+    </select>
+
+    <select id="selectProposalPatById" parameterType="String" resultMap="ProposalPatResult">
+
+        <!--<include refid="selectProposalPatVo"/>-->
+        SELECT p.proposal_id, p.proposal_name, p.employee_invention, p.applicant_id,
+        p.apply_dept_id, p.type_id, p.importance_id, p.launch_time, p.project_id, p.motorcycle_id,
+        p.country_id, p.technical_id, p.is_open, p.is_preliminary, p.back_tech, p.content_summary,
+        p.contacts_id, p.remark, p.create_time, p.create_by, p.proposal_status, p.instance_id
+        ,c.user_ID_,c.MESSAGE_
+        FROM ry_proposal_pat p
+        LEFT JOIN `act_hi_comment` c
+        ON p.`instance_id` = c.`PROC_INST_ID_`
+      where p.proposal_id = #{proposalId}
+    </select>
+
+    <!--生成申请专利编号时模糊查询-->
+    <select id="selectProposalPatLikeId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select COUNT(*) from ry_proposal_pat where proposal_id like CONCAT('%', #{proposalId},'%');
+    </select>
+
+    <insert id="insertProposalPat" parameterType="ProposalPat" >
+        insert into ry_proposal_pat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">proposal_id,</if>
+            <if test="proposalName != null  and proposalName != ''">proposal_name,</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">employee_invention,</if>
+            <if test="applicantId != null  and applicantId != ''">applicant_id,</if>
+            <if test="applyDeptId != null  and applyDeptId != ''">apply_dept_id,</if>
+            <if test="typeId != null  and typeId != ''">type_id,</if>
+            <if test="importanceId != null  and importanceId != ''">importance_id,</if>
+            <if test="launchTime != null ">launch_time,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+            <if test="motorcycleId != null  and motorcycleId != ''">motorcycle_id,</if>
+            <if test="countryId != null  and countryId != ''">country_id,</if>
+            <if test="technicalId != null  and technicalId != ''">technical_id,</if>
+            <if test="isOpen != null  and isOpen != ''">is_open,</if>
+            <if test="isPreliminary != null  and isPreliminary != ''">is_preliminary,</if>
+            <if test="backTech != null  and backTech != ''">back_tech,</if>
+            <if test="contentSummary != null  and contentSummary != ''">content_summary,</if>
+            <if test="contactsId != null  and contactsId != ''">contacts_id,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="proposalStatus != null  and proposalStatus != ''">proposal_status,</if>
+            <if test="instanceId != null  and instanceId != ''">instance_id,</if>
+            is_delete,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">#{proposalId},</if>
+            <if test="proposalName != null  and proposalName != ''">#{proposalName},</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">#{employeeInvention},</if>
+            <if test="applicantId != null  and applicantId != ''">#{applicantId},</if>
+            <if test="applyDeptId != null  and applyDeptId != ''">#{applyDeptId},</if>
+            <if test="typeId != null  and typeId != ''">#{typeId},</if>
+            <if test="importanceId != null  and importanceId != ''">#{importanceId},</if>
+            <if test="launchTime != null ">#{launchTime},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+            <if test="motorcycleId != null  and motorcycleId != ''">#{motorcycleId},</if>
+            <if test="countryId != null  and countryId != ''">#{countryId},</if>
+            <if test="technicalId != null  and technicalId != ''">#{technicalId},</if>
+            <if test="isOpen != null  and isOpen != ''">#{isOpen},</if>
+            <if test="isPreliminary != null  and isPreliminary != ''">#{isPreliminary},</if>
+            <if test="backTech != null  and backTech != ''">#{backTech},</if>
+            <if test="contentSummary != null  and contentSummary != ''">#{contentSummary},</if>
+            <if test="contactsId != null  and contactsId != ''">#{contactsId},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="proposalStatus != null  and proposalStatus != ''">#{proposalStatus},</if>
+            <if test="instanceId != null  and instanceId != ''">#{instanceId},</if>
+            '1',
+        </trim>
+    </insert>
+
+    <update id="updateProposalPat" parameterType="ProposalPat">
+        update ry_proposal_pat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="proposalName != null  and proposalName != ''">proposal_name = #{proposalName},</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">employee_invention = #{employeeInvention},</if>
+            <if test="applicantId != null  and applicantId != ''">applicant_id = #{applicantId},</if>
+            <if test="applyDeptId != null  and applyDeptId != ''">apply_dept_id = #{applyDeptId},</if>
+            <if test="typeId != null  and typeId != ''">type_id = #{typeId},</if>
+            <if test="importanceId != null  and importanceId != ''">importance_id = #{importanceId},</if>
+            <if test="launchTime != null ">launch_time = #{launchTime},</if>
+            <if test="projectId != null  and projectId != ''">project_id = #{projectId},</if>
+            <if test="motorcycleId != null  and motorcycleId != ''">motorcycle_id = #{motorcycleId},</if>
+            <if test="countryId != null  and countryId != ''">country_id = #{countryId},</if>
+            <if test="technicalId != null  and technicalId != ''">technical_id = #{technicalId},</if>
+            <if test="isOpen != null  and isOpen != ''">is_open = #{isOpen},</if>
+            <if test="isPreliminary != null  and isPreliminary != ''">is_preliminary = #{isPreliminary},</if>
+            <if test="backTech != null  and backTech != ''">back_tech = #{backTech},</if>
+            <if test="contentSummary != null  and contentSummary != ''">content_summary = #{contentSummary},</if>
+            <if test="contactsId != null  and contactsId != ''">contacts_id = #{contactsId},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="proposalStatus != null  and proposalStatus != ''">proposal_status = #{proposalStatus},</if>
+            <if test="instanceId != null  and instanceId != ''">instance_id = #{instanceId},</if>
+        </trim>
+        where proposal_id = #{proposalId}
+    </update>
+
+    <delete id="deleteProposalPatById" parameterType="String">
+       /* delete from ry_proposal_pat where proposal_id = #{proposalId}*/
+       update ry_proposal_pat set is_delete = '0'  where proposal_id = #{proposalId}*/
+    </delete>
+
+    <delete id="deleteProposalPatByIds" parameterType="String">
+      /*  delete from ry_proposal_pat where proposal_id in*/
+        update ry_proposal_pat set is_delete = '0'  where proposal_id in
+        <foreach item="proposalId" collection="array" open="(" separator="," close=")">
+            #{proposalId}
+        </foreach>
+    </delete>
+
+</mapper>

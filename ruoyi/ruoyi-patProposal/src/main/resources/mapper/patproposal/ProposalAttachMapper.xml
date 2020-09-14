@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.ProposalAttachMapper">
+    
+    <resultMap type="ProposalAttach" id="ProposalAttachResult">
+        <result property="attachId"    column="attach_id"    />
+        <result property="accachtName"    column="accacht_name"    />
+        <result property="proposalId"    column="proposal_id"    />
+        <result property="attachPath"    column="attach_path"    />
+        <result property="attachType"    column="attach_type"    />
+        <result property="suffixType"    column="suffix_type"    />
+    </resultMap>
+
+    <sql id="selectProposalAttachVo">
+        select attach_id, accacht_name, proposal_id, attach_path, attach_type, suffix_type from ry_proposal_attach
+    </sql>
+
+    <select id="selectProposalAttachList" parameterType="ProposalAttach" resultMap="ProposalAttachResult">
+        <include refid="selectProposalAttachVo"/>
+        <where>  
+            <if test="accachtName != null  and accachtName != ''"> and accacht_name like concat('%', #{accachtName}, '%')</if>
+            <if test="proposalId != null  and proposalId != ''"> and proposal_id = #{proposalId}</if>
+            <if test="attachPath != null  and attachPath != ''"> and attach_path = #{attachPath}</if>
+            <if test="attachType != null "> and attach_type = #{attachType}</if>
+            <if test="suffixType != null  and suffixType != ''"> and suffix_type = #{suffixType}</if>
+        </where>
+    </select>
+    
+    <select id="selectProposalAttachById" parameterType="Long" resultMap="ProposalAttachResult">
+        <include refid="selectProposalAttachVo"/>
+        where attach_id = #{attachId}
+    </select>
+    
+    
+    
+    <select id="getProposalAttachList" parameterType="String" resultType="java.util.Map">
+		SELECT accacht_name,attach_path,attach_type FROM ry_proposal_attach WHERE proposal_id = #{proposalId} and attach_type = #{uploadType}
+    </select>
+
+        
+    <insert id="insertProposalAttach" parameterType="ProposalAttach">
+        insert into ry_proposal_attach
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="attachId != null ">attach_id,</if>
+            <if test="accachtName != null  and accachtName != ''">accacht_name,</if>
+            <if test="proposalId != null  and proposalId != ''">proposal_id,</if>
+            <if test="attachPath != null  and attachPath != ''">attach_path,</if>
+            <if test="attachType != null ">attach_type,</if>
+            <if test="suffixType != null  and suffixType != ''">suffix_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="attachId != null ">#{attachId},</if>
+            <if test="accachtName != null  and accachtName != ''">#{accachtName},</if>
+            <if test="proposalId != null  and proposalId != ''">#{proposalId},</if>
+            <if test="attachPath != null  and attachPath != ''">#{attachPath},</if>
+            <if test="attachType != null ">#{attachType},</if>
+            <if test="suffixType != null  and suffixType != ''">#{suffixType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProposalAttach" parameterType="ProposalAttach">
+        update ry_proposal_attach
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="accachtName != null  and accachtName != ''">accacht_name = #{accachtName},</if>
+            <if test="proposalId != null  and proposalId != ''">proposal_id = #{proposalId},</if>
+            <if test="attachPath != null  and attachPath != ''">attach_path = #{attachPath},</if>
+            <if test="attachType != null ">attach_type = #{attachType},</if>
+            <if test="suffixType != null  and suffixType != ''">suffix_type = #{suffixType},</if>
+        </trim>
+        where attach_id = #{attachId}
+    </update>
+
+    <delete id="deleteProposalAttachById" parameterType="Long">
+        delete from ry_proposal_attach where attach_id = #{attachId}
+    </delete>
+
+    <delete id="deleteProposalAttachByIds" parameterType="String">
+        delete from ry_proposal_attach where attach_id in 
+        <foreach item="attachId" collection="array" open="(" separator="," close=")">
+            #{attachId}
+        </foreach>
+    </delete>
+    
+</mapper>

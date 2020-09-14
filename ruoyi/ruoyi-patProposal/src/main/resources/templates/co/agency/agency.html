@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('代理机构信息列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>代理机构名称：</label>
+                                <input type="text" name="agencyName"/>
+                            </li>
+                            <li>
+                                <label>机构状态 ：</label>
+                                <select name="agencyStatus">
+                                    <option value="">所有</option>
+                                    <option value="1">正常合作</option>
+                                    <option value="2">停止合作</option>
+                                    <option value="3">已撤销</option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+          <!--      <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:agency:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>-->
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:agency:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:agency:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:agency:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('co:agency:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('co:agency:remove')}]];
+        var prefix = ctx + "co/agency";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "代理机构信息",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'agencyId', 
+                    title: '记录ID',
+                    visible: false
+                },
+                {
+                    field: 'agencyName', 
+                    title: '代理机构名称'
+                },
+                {
+                    field: 'agencyNo', 
+                    title: '代理机构编号',
+                    visible: false
+                },
+                {
+                    field: 'agencycode', 
+                    title: '代理机构编码',
+                    visible: false
+                },
+                {
+                    field: 'responsibleUserId', 
+                    title: '负责人ID',
+                    visible: false
+                },
+                {
+                    field: 'responsibleUser', 
+                    title: '负责人姓名'
+                },
+                {
+                    field: 'agencyTel', 
+                    title: '联系电话'
+                },
+                {
+                    field: 'agencyAddress', 
+                    title: '办公地址'
+                },
+                {
+                    field: 'numberOfAgency', 
+                    title: '从业人数'
+                },
+                {
+                    field: 'businessLicense', 
+                    title: '执业证件  附件',
+                    visible: false
+                },
+                {
+                    field: 'practiceCertificate', 
+                    title: '执业证件 附件',
+                    visible: false
+                },
+                {
+                    field: 'foundedTime', 
+                    title: '成立时间'
+                },
+                {
+                    field: 'agencyLevel', 
+                    title: '机构评级'
+                },
+                {
+                    field: 'agencyStatus', 
+                    title: '机构状态',
+                    formatter: function(value, row, index) {
+                        if(value=="0"){
+                            return "正常合作" ;
+                        }else if(value=="1"){
+                            return "停止合作" ;
+                        }else if(value=="2"){
+                            return "已撤销" ;
+                        }else{
+                            return "未知" ;
+                        }
+
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.agencyId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.agencyId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

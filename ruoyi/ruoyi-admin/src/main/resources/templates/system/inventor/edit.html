@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-inventor-edit" th:object="${ryProposalInventor}">
+            <input name="inventorId" th:field="*{inventorId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">发明人id：</label>
+                <div class="col-sm-8">
+                    <input name="userId" th:field="*{userId}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">贡献度：</label>
+                <div class="col-sm-8">
+                    <input name="contribution" th:field="*{contribution}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/inventor";
+        $("#form-inventor-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-inventor-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

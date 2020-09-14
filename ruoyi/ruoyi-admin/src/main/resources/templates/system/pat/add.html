@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('专利申请')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-pat-add">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请专利名称：</label>
+            <div class="col-sm-8">
+                <input name="proposalName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发明职务：</label>
+            <div class="col-sm-8">
+                <input name="invention" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人：</label>
+            <div class="col-sm-8">
+                <input name="userName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">提报单位：</label>
+            <div class="col-sm-8">
+                <input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择归属部门" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专利类型：</label>
+            <div class="col-sm-8">
+                <input name="typeName" class="form-control" type="text"  onclick="selectType()"  >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">重要度：</label>
+            <div class="col-sm-8">
+                <input name="importance" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">提案日期：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input name="launchTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属研发项目：</label>
+            <div class="col-sm-8">
+                <input name="projectName" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">车型：</label>
+            <div class="col-sm-8">
+                <input name="motorcycleType" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请国家：</label>
+            <div class="col-sm-8">
+                <input name="proposalCountry" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">技术领域：</label>
+            <div class="col-sm-8">
+                <input name="technicalDesc" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">提前公开：</label>
+            <div class="col-sm-8">
+                <input name="isOpen" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否预审：</label>
+            <div class="col-sm-8">
+                <input name="isPreliminary" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">背景技术：</label>
+            <div class="col-sm-8">
+                <textarea name="backTech" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">内容概要：</label>
+            <div class="col-sm-8">
+                <textarea name="contentSummary" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">附件id：</label>
+            <div class="col-sm-8">
+                <input name="fileId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发明表id：</label>
+            <div class="col-sm-8">
+                <input name="inventorId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人id：</label>
+            <div class="col-sm-8">
+                <input name="contactsId" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">技术交底附件id：</label>
+            <div class="col-sm-8">
+                <input name="technicalFile" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script type="text/javascript">
+    var prefix = ctx + "system/pat"
+    $("#form-pat-add").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/add", $('#form-pat-add').serialize());
+        }
+    }
+
+    $("input[name='launchTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    /*用户管理-新增-选择部门树*/
+    function selectDeptTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/dept/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+        }
+    }
+
+
+
+    function selectType() {
+        var  options = {
+            columns: [{
+                field: 'typeName',
+                title: '类型名称'
+            }],
+        };$.table.init(options);
+    }
+/*
+    function selectType() {
+        $.ajax({
+            url :"system/type/list" ,
+            type: "get",
+            dataType: "json",
+            success: function(result) {
+                result.
+            }
+
+
+        })
+
+    }*/
+</script>
+</body>
+</html>

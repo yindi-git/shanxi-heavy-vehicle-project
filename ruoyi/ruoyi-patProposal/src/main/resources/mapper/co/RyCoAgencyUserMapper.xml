@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.co.mapper.RyCoAgencyUserMapper">
+    
+    <resultMap type="RyCoAgencyUser" id="RyCoAgencyUserResult">
+        <result property="agencyUserId"    column="agency_user_id"    />
+        <result property="agencyUserCode"    column="agency_user_code"    />
+        <result property="agencyUserName"    column="agency_user_name"    />
+        <result property="agencyId"    column="agency_id"    />
+        <result property="agencyUserTel"    column="agency_user_tel"    />
+        <result property="agencyUserEmail"    column="agency_user_email"    />
+        <result property="skilledAreas"    column="skilled_areas"    />
+        <result property="yearsOfWork"    column="years_of_work"    />
+        <result property="obtainLicenseCode"    column="obtain_license_code"    />
+        <result property="agencyUserLevel"    column="agency_user_level"    />
+        <result property="agencyUserStatus"    column="agency_user_status"    />
+    </resultMap>
+
+    <sql id="selectRyCoAgencyUserVo">
+        select agency_user_id, agency_user_code, agency_user_name, agency_id, agency_user_tel, agency_user_email, skilled_areas, years_of_work, obtain_license_code, agency_user_level, agency_user_status from ry_co_agency_user
+    </sql>
+
+    <select id="selectRyCoAgencyUserList" parameterType="RyCoAgencyUser" resultMap="RyCoAgencyUserResult">
+        <include refid="selectRyCoAgencyUserVo"/>
+        <where>  
+            <if test="agencyUserCode != null  and agencyUserCode != ''"> and agency_user_code = #{agencyUserCode}</if>
+            <if test="agencyUserName != null  and agencyUserName != ''"> and agency_user_name like concat('%', #{agencyUserName}, '%')</if>
+            <if test="agencyId != null  and agencyId != ''"> and agency_id = #{agencyId}</if>
+            <if test="agencyUserTel != null  and agencyUserTel != ''"> and agency_user_tel = #{agencyUserTel}</if>
+            <if test="agencyUserEmail != null  and agencyUserEmail != ''"> and agency_user_email = #{agencyUserEmail}</if>
+            <if test="skilledAreas != null  and skilledAreas != ''"> and skilled_areas = #{skilledAreas}</if>
+            <if test="yearsOfWork != null "> and years_of_work = #{yearsOfWork}</if>
+            <if test="obtainLicenseCode != null  and obtainLicenseCode != ''"> and obtain_license_code = #{obtainLicenseCode}</if>
+            <if test="agencyUserLevel != null  and agencyUserLevel != ''"> and agency_user_level = #{agencyUserLevel}</if>
+            <if test="agencyUserStatus != null "> and agency_user_status = #{agencyUserStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyCoAgencyUserById" parameterType="Integer" resultMap="RyCoAgencyUserResult">
+        <include refid="selectRyCoAgencyUserVo"/>
+        where agency_user_id = #{agencyUserId}
+    </select>
+
+
+    <select id="selectListByAgencyId" parameterType="String" resultMap="RyCoAgencyUserResult">
+        <include refid="selectRyCoAgencyUserVo"/>
+        where agency_id = #{agencyid}
+    </select>
+        
+    <insert id="insertRyCoAgencyUser" parameterType="RyCoAgencyUser" useGeneratedKeys="true" keyProperty="agencyUserId">
+        insert into ry_co_agency_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="agencyUserCode != null  and agencyUserCode != ''">agency_user_code,</if>
+            <if test="agencyUserName != null  and agencyUserName != ''">agency_user_name,</if>
+            <if test="agencyId != null  and agencyId != ''">agency_id,</if>
+            <if test="agencyUserTel != null  and agencyUserTel != ''">agency_user_tel,</if>
+            <if test="agencyUserEmail != null  and agencyUserEmail != ''">agency_user_email,</if>
+            <if test="skilledAreas != null  and skilledAreas != ''">skilled_areas,</if>
+            <if test="yearsOfWork != null ">years_of_work,</if>
+            <if test="obtainLicenseCode != null  and obtainLicenseCode != ''">obtain_license_code,</if>
+            <if test="agencyUserLevel != null  and agencyUserLevel != ''">agency_user_level,</if>
+            <if test="agencyUserStatus != null ">agency_user_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="agencyUserCode != null  and agencyUserCode != ''">#{agencyUserCode},</if>
+            <if test="agencyUserName != null  and agencyUserName != ''">#{agencyUserName},</if>
+            <if test="agencyId != null  and agencyId != ''">#{agencyId},</if>
+            <if test="agencyUserTel != null  and agencyUserTel != ''">#{agencyUserTel},</if>
+            <if test="agencyUserEmail != null  and agencyUserEmail != ''">#{agencyUserEmail},</if>
+            <if test="skilledAreas != null  and skilledAreas != ''">#{skilledAreas},</if>
+            <if test="yearsOfWork != null ">#{yearsOfWork},</if>
+            <if test="obtainLicenseCode != null  and obtainLicenseCode != ''">#{obtainLicenseCode},</if>
+            <if test="agencyUserLevel != null  and agencyUserLevel != ''">#{agencyUserLevel},</if>
+            <if test="agencyUserStatus != null ">#{agencyUserStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyCoAgencyUser" parameterType="RyCoAgencyUser">
+        update ry_co_agency_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="agencyUserCode != null  and agencyUserCode != ''">agency_user_code = #{agencyUserCode},</if>
+            <if test="agencyUserName != null  and agencyUserName != ''">agency_user_name = #{agencyUserName},</if>
+            <if test="agencyId != null  and agencyId != ''">agency_id = #{agencyId},</if>
+            <if test="agencyUserTel != null  and agencyUserTel != ''">agency_user_tel = #{agencyUserTel},</if>
+            <if test="agencyUserEmail != null  and agencyUserEmail != ''">agency_user_email = #{agencyUserEmail},</if>
+            <if test="skilledAreas != null  and skilledAreas != ''">skilled_areas = #{skilledAreas},</if>
+            <if test="yearsOfWork != null ">years_of_work = #{yearsOfWork},</if>
+            <if test="obtainLicenseCode != null  and obtainLicenseCode != ''">obtain_license_code = #{obtainLicenseCode},</if>
+            <if test="agencyUserLevel != null  and agencyUserLevel != ''">agency_user_level = #{agencyUserLevel},</if>
+            <if test="agencyUserStatus != null ">agency_user_status = #{agencyUserStatus},</if>
+        </trim>
+        where agency_user_id = #{agencyUserId}
+    </update>
+
+    <delete id="deleteRyCoAgencyUserById" parameterType="Integer">
+        delete from ry_co_agency_user where agency_user_id = #{agencyUserId}
+    </delete>
+
+    <delete id="deleteRyCoAgencyUserByIds" parameterType="String">
+        delete from ry_co_agency_user where agency_user_id in 
+        <foreach item="agencyUserId" collection="array" open="(" separator="," close=")">
+            #{agencyUserId}
+        </foreach>
+    </delete>
+    
+</mapper>

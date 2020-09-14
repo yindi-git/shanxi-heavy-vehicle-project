@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.co.mapper.RyCoSynergyMapper">
+    
+    <resultMap type="RyCoSynergyVo" id="RyCoSynergyResult">
+        <result property="id"    column="id"    />
+        <result property="proposalId"    column="proposal_id"    />
+        <result property="patentcode"    column="patentCode"    />
+        <result property="samedayapply"    column="sameDayApply"    />
+        <result property="typeid"    column="typeId"    />
+        <result property="countryid"    column="countryId"    />
+        <result property="isOpen"    column="is_open"    />
+        <result property="isPreliminary"    column="is_preliminary"    />
+        <result property="agencyid"    column="agencyId"    />
+        <result property="agencycode"    column="agencyCode"    />
+        <result property="budgecode"    column="budgeCode"    />
+        <result property="creattime"    column="creatTime"    />
+        <result property="moreinfo"    column="moreInfo"    />
+        <result property="attachId"    column="attach_id"    />
+        <result property="conductor"    column="conductor"    />
+        <result property="updatetime"    column="updateTime"    />
+        <result property="timenodes"    column="timeNodes"    />
+      <collection  property="proposalPat"   javaType="RyProposaPatVo"    resultMap="ProposalPatResult" />
+    </resultMap>
+
+    <resultMap type="RyProposaPatVo" id="ProposalPatResult">
+        <result property="proposalId"    column="proposal_id"    />
+        <result property="proposalName"    column="proposal_name"    />
+        <result property="employeeInvention"    column="employee_invention"    />
+        <result property="applicantId"    column="applicant_id"    />
+        <result property="applyDeptId"    column="apply_dept_id"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="importanceId"    column="importance_id"    />
+        <result property="launchTime"    column="launch_time"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="motorcycleId"    column="motorcycle_id"    />
+        <result property="countryId"    column="country_id"    />
+        <result property="technicalId"    column="technical_id"    />
+        <result property="isOpen"    column="is_open"    />
+        <result property="isPreliminary"    column="is_preliminary"    />
+        <result property="backTech"    column="back_tech"    />
+        <result property="contentSummary"    column="content_summary"    />
+        <result property="contactsId"    column="contacts_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="proposalStatus"    column="proposal_status"    />
+        <result property="instanceId"    column="instance_id"    />
+    </resultMap>
+
+
+    <sql id="selectRyCoSynergyVo">
+        select id, proposal_id, patentCode, sameDayApply, typeId, countryId, is_open, is_preliminary, agencyId, agencyCode, budgeCode, creatTime, moreInfo, attach_id, conductor, updateTime, timeNodes from ry_co_synergy
+    </sql>
+
+    <select id="selectRyCoSynergyList" parameterType="RyCoSynergy" resultMap="RyCoSynergyResult">
+        <include refid="selectRyCoSynergyVo"/>
+        <where>  
+            <if test="proposalId != null  and proposalId != ''"> and proposal_id = #{proposalId}</if>
+            <if test="patentcode != null  and patentcode != ''"> and patentCode = #{patentcode}</if>
+            <if test="samedayapply != null "> and sameDayApply = #{samedayapply}</if>
+            <if test="typeid != null "> and typeId = #{typeid}</if>
+            <if test="countryid != null "> and countryId = #{countryid}</if>
+            <if test="isOpen != null "> and is_open = #{isOpen}</if>
+            <if test="isPreliminary != null "> and is_preliminary = #{isPreliminary}</if>
+            <if test="agencyid != null "> and agencyId = #{agencyid}</if>
+            <if test="agencycode != null  and agencycode != ''"> and agencyCode = #{agencycode}</if>
+            <if test="budgecode != null  and budgecode != ''"> and budgeCode = #{budgecode}</if>
+            <if test="creattime != null "> and creatTime = #{creattime}</if>
+            <if test="moreinfo != null  and moreinfo != ''"> and moreInfo = #{moreinfo}</if>
+            <if test="attachId != null  and attachId != ''"> and attach_id = #{attachId}</if>
+            <if test="conductor != null  and conductor != ''"> and conductor = #{conductor}</if>
+            <if test="updatetime != null "> and updateTime = #{updatetime}</if>
+            <if test="timenodes != null "> and timeNodes = #{timenodes}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyCoSynergyByProposalId" parameterType="String" resultMap="RyCoSynergyResult">
+        <!--<include refid="selectRyCoSynergyVo"/>-->
+        SELECT s.id, s.proposal_id, s.patentCode, s.sameDayApply, s.typeId, s.countryId, s.is_open, s.is_preliminary,
+        s.agencyId, s.agencyCode,s.budgeCode, s.creatTime, s.moreInfo, s.attach_id, s.conductor, s.updateTime, s.timeNodes,
+        p.*
+        FROM ry_co_synergy s
+        LEFT JOIN `ry_proposal_pat` p ON s.proposal_id=p.proposal_id
+        where s.proposal_id =#{proposalId}
+    </select>
+
+    <select id="selectRyCoSynergyById" parameterType="String" resultMap="RyCoSynergyResult">
+        <include refid="selectRyCoSynergyVo"/>
+        where id =#{Id}
+    </select>
+
+
+    <select id="selectRyCoSynergyByAgencyId" parameterType="String" resultMap="RyCoSynergyResult">
+        <include refid="selectRyCoSynergyVo"/>
+        where agencyId =#{agencyId}
+    </select>
+        
+    <insert id="insertRyCoSynergy" parameterType="RyCoSynergy">
+        insert into ry_co_synergy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="proposalId != null  and proposalId != ''">proposal_id,</if>
+            <if test="patentcode != null  and patentcode != ''">patentCode,</if>
+            <if test="samedayapply != null ">sameDayApply,</if>
+            <if test="typeid != null ">typeId,</if>
+            <if test="countryid != null ">countryId,</if>
+            <if test="isOpen != null ">is_open,</if>
+            <if test="isPreliminary != null ">is_preliminary,</if>
+            <if test="agencyid != null ">agencyId,</if>
+            <if test="agencycode != null  and agencycode != ''">agencyCode,</if>
+            <if test="budgecode != null  and budgecode != ''">budgeCode,</if>
+            <if test="creattime != null ">creatTime,</if>
+            <if test="moreinfo != null  and moreinfo != ''">moreInfo,</if>
+            <if test="attachId != null  and attachId != ''">attach_id,</if>
+            <if test="conductor != null  and conductor != ''">conductor,</if>
+            <if test="updatetime != null ">updateTime,</if>
+            <if test="timenodes != null ">timeNodes,</if>
+            <if test ="instanceId !=null ">instance_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="proposalId != null  and proposalId != ''">#{proposalId},</if>
+            <if test="patentcode != null  and patentcode != ''">#{patentcode},</if>
+            <if test="samedayapply != null ">#{samedayapply},</if>
+            <if test="typeid != null ">#{typeid},</if>
+            <if test="countryid != null ">#{countryid},</if>
+            <if test="isOpen != null ">#{isOpen},</if>
+            <if test="isPreliminary != null ">#{isPreliminary},</if>
+            <if test="agencyid != null ">#{agencyid},</if>
+            <if test="agencycode != null  and agencycode != ''">#{agencycode},</if>
+            <if test="budgecode != null  and budgecode != ''">#{budgecode},</if>
+            <if test="creattime != null ">#{creattime},</if>
+            <if test="moreinfo != null  and moreinfo != ''">#{moreinfo},</if>
+            <if test="attachId != null  and attachId != ''">#{attachId},</if>
+            <if test="conductor != null  and conductor != ''">#{conductor},</if>
+            <if test="updatetime != null ">#{updatetime},</if>
+            <if test="timenodes != null ">#{timenodes},</if>
+            <if test ="instanceId !=null ">#{instanceId},</if>
+         </trim>
+    </insert>
+
+    <!--生成专利编号时模糊查询-->
+    <select id="selectProposalPatLikeId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select COUNT(*) from ry_co_synergy where patentCode like CONCAT('%', #{patentCode},'%');
+    </select>
+    <update id="updateRyCoSynergy" parameterType="RyCoSynergy">
+        update ry_co_synergy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">proposal_id = #{proposalId},</if>
+            <if test="patentcode != null  and patentcode != ''">patentCode = #{patentcode},</if>
+            <if test="samedayapply != null ">sameDayApply = #{samedayapply},</if>
+            <if test="typeid != null ">typeId = #{typeid},</if>
+            <if test="countryid != null ">countryId = #{countryid},</if>
+            <if test="isOpen != null ">is_open = #{isOpen},</if>
+            <if test="isPreliminary != null ">is_preliminary = #{isPreliminary},</if>
+            <if test="agencyid != null ">agencyId = #{agencyid},</if>
+            <if test="agencycode != null  and agencycode != ''">agencyCode = #{agencycode},</if>
+            <if test="budgecode != null  and budgecode != ''">budgeCode = #{budgecode},</if>
+            <if test="creattime != null ">creatTime = #{creattime},</if>
+            <if test="moreinfo != null  and moreinfo != ''">moreInfo = #{moreinfo},</if>
+            <if test="attachId != null  and attachId != ''">attach_id = #{attachId},</if>
+            <if test="conductor != null  and conductor != ''">conductor = #{conductor},</if>
+            <if test="updatetime != null ">updateTime = #{updatetime},</if>
+            <if test="timenodes != null ">timeNodes = #{timenodes},</if>
+            <if test ="instanceId !=null ">instance_id =#{instanceId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRyCoSynergyById" parameterType="String">
+        delete from ry_co_synergy where id = #{id}
+    </delete>
+
+    <delete id="deleteRyCoSynergyByIds" parameterType="String">
+        delete from ry_co_synergy where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

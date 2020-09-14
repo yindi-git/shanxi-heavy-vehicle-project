@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.RyProposalProjectMapper">
+    
+    <resultMap type="RyProposalProject" id="RyProposalProjectResult">
+        <result property="projectId"    column="project_id"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="projectDesc"    column="project_desc"    />
+        <result property="responsibleUnitId"    column="responsible_unit_id"    />
+        <result property="responsibleUnit"    column="responsible_unit"    />
+        <result property="responsibleUserId"    column="responsible_user_id"    />
+        <result property="responsibleUser"    column="responsible_user"    />
+        <result property="innovativePoints"    column="innovative_points"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="projectCycle"    column="project_cycle"    />
+        <result property="securityLevel"    column="security_level"    />
+        <result property="planProposalNumber"    column="plan_proposal_number"    />
+        <result property="planInventorPropNumber"    column="plan_inventor_prop_number"    />
+        <result property="projectLiterature"    column="project_literature"    />
+        <result property="repairsUserId"    column="repairs_user_id"    />
+        <result property="repairsUser"    column="repairs_user"    />
+        <result property="repairsTime"    column="repairs_time"    />
+        <result property="projectComments"    column="project_comments"    />
+    </resultMap>
+
+    <sql id="selectRyProposalProjectVo">
+        select project_id, project_name, project_desc, responsible_unit_id, responsible_unit, responsible_user_id, responsible_user, innovative_points, create_time, project_cycle, security_level, plan_proposal_number, plan_inventor_prop_number, project_literature, repairs_user_id, repairs_user, repairs_time, project_comments from ry_proposal_project
+    </sql>
+
+    <select id="selectRyProposalProjectList" parameterType="RyProposalProject" resultMap="RyProposalProjectResult">
+        <include refid="selectRyProposalProjectVo"/>
+        <where>  
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="projectDesc != null  and projectDesc != ''"> and project_desc = #{projectDesc}</if>
+            <if test="responsibleUnitId != null  and responsibleUnitId != ''"> and responsible_unit_id = #{responsibleUnitId}</if>
+            <if test="responsibleUnit != null  and responsibleUnit != ''"> and responsible_unit = #{responsibleUnit}</if>
+            <if test="responsibleUserId != null  and responsibleUserId != ''"> and responsible_user_id = #{responsibleUserId}</if>
+            <if test="responsibleUser != null  and responsibleUser != ''"> and responsible_user = #{responsibleUser}</if>
+            <if test="innovativePoints != null  and innovativePoints != ''"> and innovative_points = #{innovativePoints}</if>
+            <if test="projectCycle != null  and projectCycle != ''"> and project_cycle = #{projectCycle}</if>
+            <if test="securityLevel != null  and securityLevel != ''"> and security_level = #{securityLevel}</if>
+            <if test="planProposalNumber != null "> and plan_proposal_number = #{planProposalNumber}</if>
+            <if test="planInventorPropNumber != null "> and plan_inventor_prop_number = #{planInventorPropNumber}</if>
+            <if test="projectLiterature != null  and projectLiterature != ''"> and project_literature = #{projectLiterature}</if>
+            <if test="repairsUserId != null  and repairsUserId != ''"> and repairs_user_id = #{repairsUserId}</if>
+            <if test="repairsUser != null  and repairsUser != ''"> and repairs_user = #{repairsUser}</if>
+            <if test="repairsTime != null "> and repairs_time = #{repairsTime}</if>
+            <if test="projectComments != null  and projectComments != ''"> and project_comments = #{projectComments}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyProposalProjectById" parameterType="String" resultMap="RyProposalProjectResult">
+        <include refid="selectRyProposalProjectVo"/>
+        where project_id = #{projectId}
+    </select>
+        
+    <insert id="insertRyProposalProject" parameterType="RyProposalProject" useGeneratedKeys="true" keyProperty="projectId">
+        insert into ry_proposal_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectName != null  and projectName != ''">project_name,</if>
+            <if test="projectDesc != null  and projectDesc != ''">project_desc,</if>
+            <if test="responsibleUnitId != null  and responsibleUnitId != ''">responsible_unit_id,</if>
+            <if test="responsibleUnit != null  and responsibleUnit != ''">responsible_unit,</if>
+            <if test="responsibleUserId != null  and responsibleUserId != ''">responsible_user_id,</if>
+            <if test="responsibleUser != null  and responsibleUser != ''">responsible_user,</if>
+            <if test="innovativePoints != null  and innovativePoints != ''">innovative_points,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="projectCycle != null  and projectCycle != ''">project_cycle,</if>
+            <if test="securityLevel != null  and securityLevel != ''">security_level,</if>
+            <if test="planProposalNumber != null ">plan_proposal_number,</if>
+            <if test="planInventorPropNumber != null ">plan_inventor_prop_number,</if>
+            <if test="projectLiterature != null  and projectLiterature != ''">project_literature,</if>
+            <if test="repairsUserId != null  and repairsUserId != ''">repairs_user_id,</if>
+            <if test="repairsUser != null  and repairsUser != ''">repairs_user,</if>
+            <if test="repairsTime != null ">repairs_time,</if>
+            <if test="projectComments != null  and projectComments != ''">project_comments,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectName != null  and projectName != ''">#{projectName},</if>
+            <if test="projectDesc != null  and projectDesc != ''">#{projectDesc},</if>
+            <if test="responsibleUnitId != null  and responsibleUnitId != ''">#{responsibleUnitId},</if>
+            <if test="responsibleUnit != null  and responsibleUnit != ''">#{responsibleUnit},</if>
+            <if test="responsibleUserId != null  and responsibleUserId != ''">#{responsibleUserId},</if>
+            <if test="responsibleUser != null  and responsibleUser != ''">#{responsibleUser},</if>
+            <if test="innovativePoints != null  and innovativePoints != ''">#{innovativePoints},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="projectCycle != null  and projectCycle != ''">#{projectCycle},</if>
+            <if test="securityLevel != null  and securityLevel != ''">#{securityLevel},</if>
+            <if test="planProposalNumber != null ">#{planProposalNumber},</if>
+            <if test="planInventorPropNumber != null ">#{planInventorPropNumber},</if>
+            <if test="projectLiterature != null  and projectLiterature != ''">#{projectLiterature},</if>
+            <if test="repairsUserId != null  and repairsUserId != ''">#{repairsUserId},</if>
+            <if test="repairsUser != null  and repairsUser != ''">#{repairsUser},</if>
+            <if test="repairsTime != null ">#{repairsTime},</if>
+            <if test="projectComments != null  and projectComments != ''">#{projectComments},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyProposalProject" parameterType="RyProposalProject">
+        update ry_proposal_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null  and projectName != ''">project_name = #{projectName},</if>
+            <if test="projectDesc != null  and projectDesc != ''">project_desc = #{projectDesc},</if>
+            <if test="responsibleUnitId != null  and responsibleUnitId != ''">responsible_unit_id = #{responsibleUnitId},</if>
+            <if test="responsibleUnit != null  and responsibleUnit != ''">responsible_unit = #{responsibleUnit},</if>
+            <if test="responsibleUserId != null  and responsibleUserId != ''">responsible_user_id = #{responsibleUserId},</if>
+            <if test="responsibleUser != null  and responsibleUser != ''">responsible_user = #{responsibleUser},</if>
+            <if test="innovativePoints != null  and innovativePoints != ''">innovative_points = #{innovativePoints},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="projectCycle != null  and projectCycle != ''">project_cycle = #{projectCycle},</if>
+            <if test="securityLevel != null  and securityLevel != ''">security_level = #{securityLevel},</if>
+            <if test="planProposalNumber != null ">plan_proposal_number = #{planProposalNumber},</if>
+            <if test="planInventorPropNumber != null ">plan_inventor_prop_number = #{planInventorPropNumber},</if>
+            <if test="projectLiterature != null  and projectLiterature != ''">project_literature = #{projectLiterature},</if>
+            <if test="repairsUserId != null  and repairsUserId != ''">repairs_user_id = #{repairsUserId},</if>
+            <if test="repairsUser != null  and repairsUser != ''">repairs_user = #{repairsUser},</if>
+            <if test="repairsTime != null ">repairs_time = #{repairsTime},</if>
+            <if test="projectComments != null  and projectComments != ''">project_comments = #{projectComments},</if>
+        </trim>
+        where project_id = #{projectId}
+    </update>
+
+    <delete id="deleteRyProposalProjectById" parameterType="String">
+        delete from ry_proposal_project where project_id = #{projectId}
+    </delete>
+
+    <delete id="deleteRyProposalProjectByIds" parameterType="String">
+        delete from ry_proposal_project where project_id in 
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
+    
+</mapper>

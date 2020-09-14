@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-motorcycle-edit" th:object="${ryProposalMotorcycle}">
+            <input name="motorcycleId" th:field="*{motorcycleId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">汽车类型：</label>
+                <div class="col-sm-8">
+                    <input id="motorcycleType" name="motorcycleType" class="form-control" type="text" required>
+                </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/motorcycle";
+        $("#form-motorcycle-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-motorcycle-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

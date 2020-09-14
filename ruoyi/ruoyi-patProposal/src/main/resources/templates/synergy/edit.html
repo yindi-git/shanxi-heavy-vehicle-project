@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('填写【专利提案协同审查单】')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-agency-edit" th:object="${ryCoSynergy}">
+        <input name="id" th:field="*{id}" type="hidden">
+       <input name="proposal" id ="proposal" th:field="*{proposalPat.proposalId}" type="hidden">
+        <input name="countryId" id="countryId" th:field="*{proposalPat.countryId}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">专利提案名称：</label>
+            <div class="col-sm-10">
+                <input name="agencyid" th:field="*{proposalPat.proposalName}" class="form-control" type="text"  required readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">申请人：</label>
+            <div class="col-sm-4">
+                <input name="agencyid" th:field="*{proposalPat.applicantId}" class="form-control" type="text"  required readonly >
+            </div>
+            <label class="col-sm-2 control-label is-required">第一申请人：</label>
+            <div class="col-sm-4">
+                <input name="proposalId" th:field="*{proposalPat.proposalId}" class="form-control" type="text"  required readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">申请人地址：</label>
+            <div class="col-sm-10">
+                <textarea name="backTech" class="form-control"   readonly></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">发明人：</label>
+            <div class="col-sm-4">
+                <input name="userName"  id="userName" class="form-control"  th:field="*{proposalInventor.userName}" type="text"  required>
+            </div>
+            <label class="col-sm-2 control-label is-required">第一发明人：</label>
+            <div class="col-sm-4">
+                <input name="isFirstInventor" id="isFirstInventor" th:field="*{proposalInventor.userName}"  class="form-control" type="text"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">第一发明人身份证号码：</label>
+            <div class="col-sm-4">
+                <input name="idcard" id="idcard" class="form-control" type="text"  th:field="*{proposalInventor.idcard}"  required>
+            </div>
+            <label class="col-sm-2 control-label is-required">联系人：</label>
+            <div class="col-sm-4">
+                <input name="agencyid" th:field="*{proposalPat.contactsId}" class="form-control" type="text"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">联系电话：</label>
+            <div class="col-sm-4">
+                <input name="phone" id="phone" class="form-control" type="text"  th:field="*{proposalInventor.phone}" required>
+            </div>
+            <label class="col-sm-2 control-label is-required">联系邮箱：</label>
+            <div class="col-sm-4">
+                <input name="email" id="email" class="form-control" type="text"  th:field="*{proposalInventor.email}" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">提报单位：</label>
+            <div class="col-sm-10">
+                <input name="applicantId" th:field="*{proposalPat.applicantId}" class="form-control" type="text"  required readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">技术领域描述：</label>
+            <div class="col-sm-10">
+                <textarea name="backTech" class="form-control" th:field="*{proposalPat.backTech}"  ></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">内容概要：</label>
+            <div class="col-sm-10">
+                <textarea name="contentSummary" class="form-control"  th:field="*{proposalPat.contentSummary}" ></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">技术交底书（历史）</label>
+            <div class="col-sm-10" id="fileFormPaperDownload">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">技术交底书：</label>
+            <div class="col-sm-10" id="fileFormPaper">
+                <input name="filePath1" id="filePath1" class="form-control" type="file">
+                <div class="btn-group-sm" role="group" id="addAttachBtnPaper">
+                    <a class="btn btn-success" onclick="addAttachBtnPaper()" >
+                        <i class="fa fa-plus"></i> 追加附件
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">专利编号（内部）：</label>
+            <div class="col-sm-4">
+                <input name="patentcode" th:field="*{patentcode}" class="form-control" type="text"  required readonly>
+            </div>
+            <label class="col-sm-2 control-label is-required">申请类型：</label>
+            <div class="col-sm-4">
+                <select name="typeId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalType()}"  >
+                    <option th:each="map:${Map}" th:text="${map.type_name}" th:value="${map.type_id}" ></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">同日申请：</label>
+            <div class="col-sm-4">
+                <div class="radio-box">
+                    <input type="radio" id="samedayapply0" name="samedayapply"  value="0">
+                    <label for="samedayapply0">是</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="samedayapply1" name="samedayapply"  value="1" checked="checked">
+                    <label for="samedayapply1">否</label>
+                </div>
+            </div>
+            <label class="col-sm-2 control-label is-required">申请国家：</label>
+            <div class="col-sm-4">
+                <input name="countryId" id="countryId" class="form-control" type="text"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">提前公开：</label>
+            <div class="col-sm-4">
+                <div class="radio-box">
+                    <input type="radio" id="isOpen0" name="isOpen"  value="0">
+                    <label for="isOpen0">是</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="isOpen1" name="isOpen"  value="1" checked="checked">
+                    <label for="isOpen1">否</label>
+                </div>
+            </div>
+            <label class="col-sm-2 control-label is-required">快速预审：</label>
+            <div class="col-sm-4">
+                <div class="radio-box">
+                    <input type="radio" id="isPreliminary0" name="isPreliminary"  value="0">
+                    <label for="isPreliminary0">是</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="isPreliminary1" name="isPreliminary"  value="1" checked="checked">
+                    <label for="isPreliminary1">否</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">代理机构：</label>
+            <div class="col-sm-4">
+                <select name="agencyName" class="form-control m-b select2-multiple" id="agencyName" >
+                </select>
+            </div>
+            <label class="col-sm-2 control-label is-required">机构编码：</label>
+            <div class="col-sm-4">
+                <input name="agencycode" id="agencycode" class="form-control" type="text"  required readonly="true">
+                <input name="agencyid" id="agencyid" class="form-control" type="hidden"  >
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">预算编号：</label>
+            <div class="col-sm-4">
+                <select name="budgetCode" class="form-control m-b select2-multiple" id="budgetCode"  >
+                </select>
+            </div>
+            <label class="col-sm-2 control-label is-required">委案日期：</label>
+            <div class="input-group date">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                <input name="launchTime" class="form-control" placeholder="yyyy-MM-dd" type="text"  required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">专利申请补充说明（历史）</label>
+            <div class="col-sm-10" id="fileFormRemarksDownload">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">专利申请补充说明：</label>
+            <div class="col-sm-10" id="fileFormRemarks">
+                <input name="filePath2" id="filePath2" class="form-control" type="file">
+                <div class="btn-group-sm" role="group" id="addAttachBtnRemarks">
+                    <a class="btn btn-success" onclick="addAttachBtnRemarks()" >
+                        <i class="fa fa-plus"></i> 追加附件
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">专利申请补充材料（历史）</label>
+            <div class="col-sm-10" id="fileFormMaterialDownload">
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">专利申请补充材料：</label>
+            <div class="col-sm-10" id="fileFormMaterial">
+                <input name="filePath3" id="filePath3" class="form-control" type="file">
+                <div class="btn-group-sm" role="group" id="addAttachBtnMaterial">
+                    <a class="btn btn-success" onclick="addAttachBtnMaterial()" >
+                        <i class="fa fa-plus"></i> 追加附件
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script th:src="@{/ajaxfileupload.js}"></script>
+<script type="text/javascript">
+    var attachFileNum=1;
+    var prefix = ctx + "/synergy";
+    $("#form-agency-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var  coId =   $('input[name="id"]').val()  ;
+            savepRemarks(coId);
+            saveMaterial(coId);
+            savePaper(coId);
+            $.operate.save(prefix + "/edit", $('#form-agency-edit').serialize());
+        }
+    }
+
+    function getApplicant(){
+        var  proposalId=document.getElementById("proposal").value;
+        $.ajax({
+            type: "post",
+            data:{proposalId:proposalId},
+            url: prefix +"/inventor",
+            dataType: "json",
+            success: function(ProposalInventor){
+                $('#userName').empty();   //清空resText里面的所有内容
+                var userName="";
+                var firstName="";
+                var idcard="";
+                var email="";
+                var phone;
+                for(var i=0;i<ProposalInventor.length;i++){
+                    userName+=ProposalInventor[i].userName+"    ";
+                    if(ProposalInventor[i].isFirstInventor==1){
+                        firstName+=ProposalInventor[i].isFirstInventor;
+                        idcard=ProposalInventor[i].idcard;
+                        email=ProposalInventor[i].email;
+                        phone=ProposalInventor[i].phone;
+                    }
+                }
+                $('input[name="userName"]').val(userName);
+                $('input[name="isFirstInventor"]').val(firstName);
+                $('input[name="idcard"]').val(idcard);
+                $('input[name="email"]').val(email);
+                $('input[name="phone"]').val(phone);
+            }
+        });
+    }
+
+
+   function countryId(){
+        var  countryId=document.getElementById("countryId").value;
+        $.ajax({
+            type: "post",
+            data:{countryId:countryId},
+            url:ctx+"/system/country/selectRyProposalCountryById",
+            dataType: "json",
+            success: function(Proposal){
+           $('input[name="countryId"]').val(Proposal.countryName);
+            }
+        });
+    }
+
+
+    function agencyName(){
+        $.ajax({
+            type: "post",
+            url: ctx +"/co/agency/selectListByAgencyId",
+            dataType: "json",
+            success: function(ProposalInventor){
+                $('#agencyName').empty();   //清空resText里面的所有内容
+                $('input[name="agencyName"]').val(ProposalInventor.agencyName);
+                var option1= document.createElement("option");
+                option1.value="" ;
+                option1.innerText="请选择代理机构";
+
+                for(var i=0;i<ProposalInventor.length;i++){
+                    var option= document.createElement("option");
+                    option.value=ProposalInventor[i].agencycode +"|"+ProposalInventor[i].agencyId;
+                    option.innerText=ProposalInventor[i].agencyName;
+                    $("#agencyName").append(option);
+                }
+            }
+        });
+
+    }
+    $("#agencyName").change(function () {
+
+        var strs = new Array(); //定义一数组
+        strs = $(this).val().split("|"); //字符分割
+        $('input[name="agencycode"]').val(strs[0]);
+        $('input[name="agencyid"]').val(strs[1]);
+        //
+    });
+
+    function budget(){
+        $.ajax({
+            type: "post",
+            url: ctx +"/co/budget/selectAllBudgetList",
+            dataType: "json",
+            success: function(ProposalInventor){
+                $('#budgetCode').empty();   //清空resText里面的所有内容
+                $('input[name="budgetCode"]').val(ProposalInventor.budgetCode);
+                for(var i=0;i<ProposalInventor.length;i++){
+                    var option= document.createElement("option");
+                    option.value=ProposalInventor[i].budgetCode;
+                    option.innerText=ProposalInventor[i].budgetCode;
+                    $("#budgetCode").append(option);
+                    //$('input[name="agencycode"]').val(ProposalInventor[i].agencycode);
+                }
+            }
+        });
+
+    }
+
+    window.onload=function(){
+        getApplicant();
+        countryId();
+        agencyName();
+        budget();
+        var  coId =   $('input[name="id"]').val()  ;
+        getPatReviewAttuList(coId,100) ;
+        getPatReviewAttuList(coId,101) ;
+        getPatReviewAttuList(coId,102) ;
+
+    }
+/*    window.onload = countryId;
+    window.onload = getApplicant;*/
+
+
+
+
+
+    $("input[name='launchTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+
+    /***
+     * 保存技术交底书
+     */
+    function savePaper(coId){
+        var attachArr=new Array();
+        var arr=$("#fileFormPaper").find("input[type='file']");
+        for(var i=0;i<arr.length;i++){
+            var fileId=$(arr[i]).attr('id');
+            attachArr.push(fileId);
+        }
+        $.ajaxFileUpload({
+            method:'POST',
+            url: ctx + "patproposal/attach/upload",
+            secureuri:false,
+            fileElementId:attachArr,
+            data:{'proposalId':coId,attachType:100},
+            success:function(){
+                //继续上传技术交底附件
+            }
+        });
+    }
+
+
+    /***
+     * 保存专利申请补充说明
+     */
+    function savepRemarks(coId){
+        var attachArr=new Array();
+        var arr=$("#fileFormRemarks").find("input[type='file']");
+        for(var i=0;i<arr.length;i++){
+            var fileId=$(arr[i]).attr('id');
+            attachArr.push(fileId);
+        }
+        $.ajaxFileUpload({
+            method:'POST',
+            url: ctx + "patproposal/attach/upload",
+            secureuri:false,
+            fileElementId:attachArr,
+            data:{'proposalId':coId,attachType:101},
+            success:function(){
+                //继续上传技术交底附件
+            }
+        });
+    }
+
+
+    /***
+     * 保存专利申请补充材料
+     */
+    function saveMaterial(coId){
+        var attachArr=new Array();
+        var arr=$("#fileFormMaterial").find("input[type='file']");
+        for(var i=0;i<arr.length;i++){
+            var fileId=$(arr[i]).attr('id');
+            attachArr.push(fileId);
+        }
+        $.ajaxFileUpload({
+            method:'POST',
+            url: ctx + "patproposal/attach/upload",
+            secureuri:false,
+            fileElementId:attachArr,
+            data:{'proposalId':coId,attachType:102},
+            success:function(){
+                //继续上传技术交底附件
+            }
+        });
+    }
+
+
+
+
+
+    function addAttachBtnPaper(){
+        ++attachFileNum;
+        $("#addAttachBtnPaper").before(
+            '<div id="inputFile'+attachFileNum+'">' +
+            '   <input class="form-control" style="width: 95%;display:inline-block;" type="file" name="filePath1" id="filePath1'+attachFileNum+'">'+
+            '   <a class="close-link" onclick="delAttachBtn(inputFile'+attachFileNum+');" title="删除该附件">' +
+            '       <i class="fa fa-times"></i>' +
+            '   </a>' +
+            '</div>');
+    }
+
+
+
+
+
+    function addAttachBtnRemarks(){
+
+        ++attachFileNum;
+        $("#addAttachBtnRemarks").before(
+            '<div id="inputFile'+attachFileNum+'">' +
+            '   <input class="form-control" style="width: 95%;display:inline-block;" type="file" name="filePath2" id="filePath2'+attachFileNum+'">'+
+            '   <a class="close-link" onclick="delAttachBtn(inputFile'+attachFileNum+');" title="删除该附件">' +
+            '       <i class="fa fa-times"></i>' +
+            '   </a>' +
+            '</div>');
+    }
+
+    function addAttachBtnMaterial(){
+
+        ++attachFileNum;
+        $("#addAttachBtnMaterial").before(
+            '<div id="inputFile'+attachFileNum+'">' +
+            '   <input class="form-control" style="width: 95%;display:inline-block;" type="file" name="filePath3" id="filePath3'+attachFileNum+'">'+
+            '   <a class="close-link" onclick="delAttachBtn(inputFile'+attachFileNum+');" title="删除该附件">' +
+            '       <i class="fa fa-times"></i>' +
+            '   </a>' +
+            '</div>');
+    }
+    /**
+     *  删除附件
+     */
+    function delAttachBtn(param){
+        $("#"+param.id).remove();
+    }
+
+
+
+    function getPatReviewAttuList(proposalId,uploadType){
+        $.ajax({
+            type: "GET",
+            //dataType: "json",
+            url: ctx + "patproposal/attach/getattach?proposalId=" + proposalId+"&uploadType="+uploadType,
+            success: function (data) {
+
+                //data回调信息
+                if(data.msg=="0"){
+                    if(uploadType== 100){ //技术交底
+                        for(i=0;i<data.data.length;i++){
+                            var accname = data.data[i].accacht_name;
+                            var accpath = data.data[i].attach_path
+                            $("#fileFormPaperDownload").append("<a href='#' onclick=downloadFile('"+accpath+"')>"+accname+"</a> &nbsp&nbsp&nbsp" );
+                        }
+
+                    }
+                    if(uploadType== 101){ //补充说明
+                        for(i=0;i<data.data.length;i++){
+                            var accname = data.data[i].accacht_name;
+                            var accpath = data.data[i].attach_path
+                            $("#fileFormRemarksDownload").append("<a href='#' onclick=downloadFile('"+accpath+"')>"+accname+"</a> &nbsp&nbsp&nbsp" );
+                        }
+
+                    }
+
+                    if(uploadType== 102){ //补充材料
+                        for(i=0;i<data.data.length;i++){
+                            var accname = data.data[i].accacht_name;
+                            var accpath = data.data[i].attach_path
+                            $("#fileFormMaterialDownload").append("<a href='#' onclick=downloadFile('"+accpath+"')>"+accname+"</a> &nbsp&nbsp&nbsp" );
+                        }
+
+                    }
+
+
+                }
+            }
+        });
+
+    }
+
+//下载文件方法
+    function downloadFile(value){
+        window.location.href = ctx + "common/download/resource?resource=" + value;
+    }
+</script>
+</body>
+</html>

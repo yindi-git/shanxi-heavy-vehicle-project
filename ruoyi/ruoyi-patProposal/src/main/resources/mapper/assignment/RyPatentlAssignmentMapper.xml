@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.utiliza.mapper.RyPatentlAssignmentMapper">
+    
+    <resultMap type="RyPatentlAssignment" id="RyPatentlAssignmentResult">
+        <result property="permitId"    column="permit_id"    />
+        <result property="proposalId"    column="proposal_id"    />
+        <result property="proposalName"    column="proposal_name"    />
+        <result property="employeeInvention"    column="employee_invention"    />
+        <result property="applicantId"    column="applicant_id"    />
+        <result property="applyDeptId"    column="apply_dept_id"    />
+        <result property="typeId"    column="type_id"    />
+        <result property="signupTime"    column="signup_time"    />
+        <result property="takeTime"    column="take_time"    />
+        <result property="assetValuation"    column="asset_valuation"    />
+        <result property="evaluationAgency"    column="evaluation_agency"    />
+        <result property="patentee"    column="patentee"    />
+        <result property="organization"    column="Organization"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="isDelete"    column="is_delete"    />
+        <result property="patentPermitCompany"    column="patent_permit_company"    />
+        <result property="patentPermitLegal"    column="patent_permit_legal"    />
+        <result property="patentPermitIntroduce"    column="patent_permit_introduce"    />
+        <result property="patentPermitKeeppay"    column="patent_permit_keeppay"    />
+        <result property="patentPermitAgentpay"    column="patent_permit_agentpay"    />
+    </resultMap>
+
+    <sql id="selectRyPatentlAssignmentVo">
+        select permit_id, proposal_id, proposal_name, employee_invention, applicant_id, apply_dept_id, type_id, signup_time, take_time, asset_valuation, evaluation_agency, patentee, Organization, remark, create_time, create_by, is_delete, patent_permit_company, patent_permit_legal, patent_permit_introduce, patent_permit_keeppay, patent_permit_agentpay from ry_patentl_assignment
+    </sql>
+
+    <select id="selectRyPatentlAssignmentList" parameterType="RyPatentlAssignment" resultMap="RyPatentlAssignmentResult">
+        <include refid="selectRyPatentlAssignmentVo"/>
+        <where>  
+            <if test="proposalId != null  and proposalId != ''"> and proposal_id = #{proposalId}</if>
+            <if test="proposalName != null  and proposalName != ''"> and proposal_name like concat('%', #{proposalName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRyPatentlAssignmentById" parameterType="Long" resultMap="RyPatentlAssignmentResult">
+        <include refid="selectRyPatentlAssignmentVo"/>
+        where permit_id = #{permitId}
+    </select>
+        
+    <insert id="insertRyPatentlAssignment" parameterType="RyPatentlAssignment" useGeneratedKeys="true" keyProperty="permitId">
+        insert into ry_patentl_assignment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">proposal_id,</if>
+            <if test="proposalName != null  and proposalName != ''">proposal_name,</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">employee_invention,</if>
+            <if test="applicantId != null  and applicantId != ''">applicant_id,</if>
+            <if test="applyDeptId != null  and applyDeptId != ''">apply_dept_id,</if>
+            <if test="typeId != null  and typeId != ''">type_id,</if>
+            <if test="signupTime != null ">signup_time,</if>
+            <if test="takeTime != null ">take_time,</if>
+            <if test="assetValuation != null  and assetValuation != ''">asset_valuation,</if>
+            <if test="evaluationAgency != null  and evaluationAgency != ''">evaluation_agency,</if>
+            <if test="patentee != null  and patentee != ''">patentee,</if>
+            <if test="organization != null  and organization != ''">Organization,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="isDelete != null ">is_delete,</if>
+            <if test="patentPermitCompany != null  and patentPermitCompany != ''">patent_permit_company,</if>
+            <if test="patentPermitLegal != null  and patentPermitLegal != ''">patent_permit_legal,</if>
+            <if test="patentPermitIntroduce != null  and patentPermitIntroduce != ''">patent_permit_introduce,</if>
+            <if test="patentPermitKeeppay != null ">patent_permit_keeppay,</if>
+            <if test="patentPermitAgentpay != null ">patent_permit_agentpay,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">#{proposalId},</if>
+            <if test="proposalName != null  and proposalName != ''">#{proposalName},</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">#{employeeInvention},</if>
+            <if test="applicantId != null  and applicantId != ''">#{applicantId},</if>
+            <if test="applyDeptId != null  and applyDeptId != ''">#{applyDeptId},</if>
+            <if test="typeId != null  and typeId != ''">#{typeId},</if>
+            <if test="signupTime != null ">#{signupTime},</if>
+            <if test="takeTime != null ">#{takeTime},</if>
+            <if test="assetValuation != null  and assetValuation != ''">#{assetValuation},</if>
+            <if test="evaluationAgency != null  and evaluationAgency != ''">#{evaluationAgency},</if>
+            <if test="patentee != null  and patentee != ''">#{patentee},</if>
+            <if test="organization != null  and organization != ''">#{organization},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="isDelete != null ">#{isDelete},</if>
+            <if test="patentPermitCompany != null  and patentPermitCompany != ''">#{patentPermitCompany},</if>
+            <if test="patentPermitLegal != null  and patentPermitLegal != ''">#{patentPermitLegal},</if>
+            <if test="patentPermitIntroduce != null  and patentPermitIntroduce != ''">#{patentPermitIntroduce},</if>
+            <if test="patentPermitKeeppay != null ">#{patentPermitKeeppay},</if>
+            <if test="patentPermitAgentpay != null ">#{patentPermitAgentpay},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyPatentlAssignment" parameterType="RyPatentlAssignment">
+        update ry_patentl_assignment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">proposal_id = #{proposalId},</if>
+            <if test="proposalName != null  and proposalName != ''">proposal_name = #{proposalName},</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">employee_invention = #{employeeInvention},</if>
+            <if test="applicantId != null  and applicantId != ''">applicant_id = #{applicantId},</if>
+            <if test="applyDeptId != null  and applyDeptId != ''">apply_dept_id = #{applyDeptId},</if>
+            <if test="typeId != null  and typeId != ''">type_id = #{typeId},</if>
+            <if test="signupTime != null ">signup_time = #{signupTime},</if>
+            <if test="takeTime != null ">take_time = #{takeTime},</if>
+            <if test="assetValuation != null  and assetValuation != ''">asset_valuation = #{assetValuation},</if>
+            <if test="evaluationAgency != null  and evaluationAgency != ''">evaluation_agency = #{evaluationAgency},</if>
+            <if test="patentee != null  and patentee != ''">patentee = #{patentee},</if>
+            <if test="organization != null  and organization != ''">Organization = #{organization},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="isDelete != null ">is_delete = #{isDelete},</if>
+            <if test="patentPermitCompany != null  and patentPermitCompany != ''">patent_permit_company = #{patentPermitCompany},</if>
+            <if test="patentPermitLegal != null  and patentPermitLegal != ''">patent_permit_legal = #{patentPermitLegal},</if>
+            <if test="patentPermitIntroduce != null  and patentPermitIntroduce != ''">patent_permit_introduce = #{patentPermitIntroduce},</if>
+            <if test="patentPermitKeeppay != null ">patent_permit_keeppay = #{patentPermitKeeppay},</if>
+            <if test="patentPermitAgentpay != null ">patent_permit_agentpay = #{patentPermitAgentpay},</if>
+        </trim>
+        where permit_id = #{permitId}
+    </update>
+
+    <delete id="deleteRyPatentlAssignmentById" parameterType="Long">
+        delete from ry_patentl_assignment where permit_id = #{permitId}
+    </delete>
+
+    <delete id="deleteRyPatentlAssignmentByIds" parameterType="String">
+        delete from ry_patentl_assignment where permit_id in 
+        <foreach item="permitId" collection="array" open="(" separator="," close=")">
+            #{permitId}
+        </foreach>
+    </delete>
+    
+    
+    
+    <select id="getNewIdAssignment" resultType="Integer">
+		SELECT permit_id FROM ry_patentl_assignment ORDER BY permit_id DESC limit 1
+    </select>      
+    
+    
+   
+    
+    
+    
+</mapper>

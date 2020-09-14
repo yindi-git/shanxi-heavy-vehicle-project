@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('申请专利列表')" />
+    <th:block th:include="include :: layout-latest-css" />
+    <th:block th:include="include :: ztree-css" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>申请专利编号：</label>
+                            <input type="text" name="proposalId"/>
+                        </li>
+                        <li>
+                            <label>申请专利名称：</label>
+                            <input type="text" name="proposalName" onclick="selectType()" />
+                        </li>
+                        <li>
+                            <label>申请人：</label>
+                            <input type="text" name="userName" placeholder="请选择归申請人" onclick=" queryDeptTree()"  class="form-control" required/>
+                        </li>
+                        <li>
+                            <label>提报单位：</label>
+                                <div class="input-group">
+                                    <input name="deptName" onclick="selectDeptTree()" id="treeName" type="text" placeholder="请选择归属部门" class="form-control" required>
+                                </div>
+                        </li>
+                        <li class="select-time">
+                            <label>提案日期：</label>
+                            <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginLaunchTime]"/>
+                            <span>-</span>
+                            <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endLaunchTime]"/>
+                        </li>
+                  <li>
+                            <label>提前公开：</label>
+                            <select name="isOpen">
+                                <option value="0">是</option>
+                                <option value="1">否</option>
+                                <option selected="selected" value=""  style="display: none" ></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>是否预审：</label>
+                            <select name="isPreliminary">
+                                <option value="">是</option>
+                                <option value="">否</option>
+                                <option selected="selected" value="" style="display: none" ></option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i> 搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i> 重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:pat:add">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:pat:edit">
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:pat:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:pat:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+            <div id="tree" class="ztree"></div>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: layout-latest-js" />
+<th:block th:include="include :: ztree-js" />
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:pat:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:pat:remove')}]];
+    var prefix = ctx + "system/pat";
+
+
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "专利申请",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'proposalId',
+                    title: '申报专利id',
+                    visible: true
+                },
+                {
+                    field: 'proposalName',
+                    title: '申请专利名称'
+                },
+                {
+                    field: 'user.userName',
+                    title: '申请人'
+                },
+                {
+                    field: 'dept.deptName',
+                    title: '提报单位'
+                },
+                {
+                    field: 'proposalType.typeName',
+                    title: '专利类型'
+                },
+                {
+                    field: 'launchTime',
+                    title: '提案日期'
+                },
+                {
+                    field: 'projectName',
+                    title: '所属研发项目'
+                },
+                {
+                    field: 'proposalMotorcycle.motorcycleType',
+                    title: '车型'
+                },
+                {
+                    field: 'tproposalCountry.country',
+                    title: '申请国家'
+                },
+                {
+                    field: 'isOpen',
+                    title: '提前公开',
+                    formatter:function (value) {
+                        return value == 1 ? '否' : '是';
+                    }
+                },
+                {
+                    field: 'isPreliminary',
+                    title: '是否预审',
+                    formatter:function (value) {
+                        return value == 1 ? '否' : '是';
+                    }
+                },
+
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + prefix + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.proposalId + '\')"><i class="fa fa-submit"></i>提交</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.proposalId + '\')"><i class="fa fa-edit"></i>修改</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.proposalId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+
+    function submit(proposalId){
+  $.ajax({
+            url: prefix +"/submitById",
+            type: "get",
+            dataType: "json",
+            data: {
+                proposalId : proposalId,
+                status: '1',
+            },
+            success: function(result) {
+                if(result>0){
+                    $.modal.alert("提交成功...")
+                    $.operate.successTabCallback(result);
+                }else{
+               $.modal.alert("系统错误，请稍后...")
+                }
+            }
+        });
+    }
+
+/*    if($.common.isEmpty(id) && table.options.type == table_type.bootstrapTreeTable) {
+        var row = $("#" + table.options.id).bootstrapTreeTable('getSelections')[0];
+        var url = prefix +"/submitById";
+
+    }*/
+
+
+
+
+    /*用户管理-新增-选择部门树*/
+    function selectDeptTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/dept/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        if ($.tree.notAllowParents(tree)) {
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#treeName").val(body.find('#treeName').val());
+            layer.close(index);
+        }
+    }
+
+
+
+
+
+    function queryDeptTree()
+    {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/dept/treeData";
+/*        var options = {
+            url: url,
+            expandLevel: 2,
+            onClick : zOnClick
+        };*/
+        var options = {
+            title: '选择人员',
+            width: "380",
+            url: url,
+            callBack: zOnClick
+        };
+        $.tree.init(options);
+
+        function zOnClick(event, treeId, treeNode) {
+            $("#deptId").val(treeNode.id);
+            $("#parentId").val(treeNode.pId);
+            $.table.search();
+        }
+    }
+
+</script>
+</body>
+</html>

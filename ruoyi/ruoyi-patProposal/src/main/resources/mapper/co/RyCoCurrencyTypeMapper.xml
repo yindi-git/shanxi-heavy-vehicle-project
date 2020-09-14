@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.co.mapper.RyCoCurrencyTypeMapper">
+    
+    <resultMap type="RyCoCurrencyType" id="RyCoCurrencyTypeResult">
+        <result property="currencyTypeId"    column="currency_type_id"    />
+        <result property="numberCode"    column="number_code"    />
+        <result property="currencyType"    column="currency_type"    />
+        <result property="exchangeRate"    column="exchange_rate"    />
+        <result property="currencyTypeCode"    column="currency_type_code"    />
+        <result property="organization"    column="organization"    />
+    </resultMap>
+
+    <sql id="selectRyCoCurrencyTypeVo">
+        select currency_type_id, number_code, currency_type, exchange_rate, currency_type_code, organization from ry_co_currency_type
+    </sql>
+
+    <select id="selectRyCoCurrencyTypeList" parameterType="RyCoCurrencyType" resultMap="RyCoCurrencyTypeResult">
+        <include refid="selectRyCoCurrencyTypeVo"/>
+        <where>  
+            <if test="numberCode != null "> and number_code = #{numberCode}</if>
+            <if test="currencyType != null  and currencyType != ''"> and currency_type = #{currencyType}</if>
+            <if test="exchangeRate != null  and exchangeRate != ''"> and exchange_rate = #{exchangeRate}</if>
+            <if test="currencyTypeCode != null  and currencyTypeCode != ''"> and currency_type_code = #{currencyTypeCode}</if>
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyCoCurrencyTypeById" parameterType="Integer" resultMap="RyCoCurrencyTypeResult">
+        <include refid="selectRyCoCurrencyTypeVo"/>
+        where currency_type_id = #{currencyTypeId}
+    </select>
+        
+    <insert id="insertRyCoCurrencyType" parameterType="RyCoCurrencyType" useGeneratedKeys="true" keyProperty="currencyTypeId">
+        insert into ry_co_currency_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="numberCode != null ">number_code,</if>
+            <if test="currencyType != null  and currencyType != ''">currency_type,</if>
+            <if test="exchangeRate != null  and exchangeRate != ''">exchange_rate,</if>
+            <if test="currencyTypeCode != null  and currencyTypeCode != ''">currency_type_code,</if>
+            <if test="organization != null  and organization != ''">organization,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="numberCode != null ">#{numberCode},</if>
+            <if test="currencyType != null  and currencyType != ''">#{currencyType},</if>
+            <if test="exchangeRate != null  and exchangeRate != ''">#{exchangeRate},</if>
+            <if test="currencyTypeCode != null  and currencyTypeCode != ''">#{currencyTypeCode},</if>
+            <if test="organization != null  and organization != ''">#{organization},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyCoCurrencyType" parameterType="RyCoCurrencyType">
+        update ry_co_currency_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="numberCode != null ">number_code = #{numberCode},</if>
+            <if test="currencyType != null  and currencyType != ''">currency_type = #{currencyType},</if>
+            <if test="exchangeRate != null  and exchangeRate != ''">exchange_rate = #{exchangeRate},</if>
+            <if test="currencyTypeCode != null  and currencyTypeCode != ''">currency_type_code = #{currencyTypeCode},</if>
+            <if test="organization != null  and organization != ''">organization = #{organization},</if>
+        </trim>
+        where currency_type_id = #{currencyTypeId}
+    </update>
+
+    <delete id="deleteRyCoCurrencyTypeById" parameterType="Integer">
+        delete from ry_co_currency_type where currency_type_id = #{currencyTypeId}
+    </delete>
+
+    <delete id="deleteRyCoCurrencyTypeByIds" parameterType="String">
+        delete from ry_co_currency_type where currency_type_id in 
+        <foreach item="currencyTypeId" collection="array" open="(" separator="," close=")">
+            #{currencyTypeId}
+        </foreach>
+    </delete>
+    
+</mapper>

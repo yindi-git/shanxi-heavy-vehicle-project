@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('【请填写功能名称】列表')" />
+</head>
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="formId">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            <label>专利编号：</label>
+                            <input type="text" name="patentcode"/>
+                        </li>
+                        <li>
+                            <label>是否同日申请：</label>
+                            <input type="text" name="samedayapply"/>
+                        </li>
+                        <li>
+                            <label>申请类型：</label>
+                            <input type="text" name="typeid"/>
+                        </li>
+                        <li>
+                            <label>申请代理机构：</label>
+                            <input type="text" name="agencyid"/>
+                        </li>
+                        <li class="select-time">
+                            <label>委案日期：</label>
+                            <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginCreattime]"/>
+                            <span>-</span>
+                            <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endCreattime]"/>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i> 搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i> 重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <!--<a class="btn btn-success" onclick="$.operate.add()" &lt;!&ndash;shiro:hasPermission="system:synergy:add"&ndash;&gt;>
+                <i class="fa fa-plus"></i> 添加
+            </a>-->
+            <a class="btn btn-primary single disabled" onclick="$.operate.edit()" ><!--shiro:hasPermission="system:synergy:edit"-->
+                <i class="fa fa-edit"></i> 修改
+            </a>
+            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"> <!--shiro:hasPermission="system:synergy:remove"-->
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()"> <!--shiro:hasPermission="system:synergy:export"-->>
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table"></table>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer" />
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:synergy:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:synergy:remove')}]];
+    var prefix = ctx + "/synergy";
+
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            modalName: "【请填写功能名称】",
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'id',
+                    title: 'id',
+                    visible: false
+                },
+                {
+                    field: 'proposalId',
+                    title: '专利提案id'
+                },
+                {
+                    field: 'patentcode',
+                    title: '专利编号'
+                },
+                {
+                    field: 'samedayapply',
+                    title: '是否同日申请'
+                },
+                {
+                    field: 'typeid',
+                    title: '申请类型'
+                },
+                {
+                    field: 'countryid',
+                    title: '申请国家'
+                },
+                {
+                    field: 'isOpen',
+                    title: '是否公开'
+                },
+                {
+                    field: 'isPreliminary',
+                    title: '是否预审'
+                },
+                {
+                    field: 'agencyid',
+                    title: '申请代理机构'
+                },
+                {
+                    field: 'agencycode',
+                    title: '申请代理机构编码'
+                },
+                {
+                    field: 'budgecode',
+                    title: '预算编号'
+                },
+                {
+                    field: 'creattime',
+                    title: '委案日期'
+                },
+                {
+                    field: 'moreinfo',
+                    title: '补充说明'
+                },
+                {
+                    field: 'attachId',
+                    title: '附件编号'
+                },
+                {
+                    field: 'conductor',
+                    title: '当前处理人'
+                },
+                {
+                    field: 'updatetime',
+                    title: '处理时间'
+                },
+                {
+                    field: 'timenodes',
+                    title: '时间节点'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + /*editFlag +*/ '" href="javascript:void(0)" onclick="submitApply(\'' + row.id + '\'/*,\'' + row.applicantId + '\'*/)"><i class="fa fa-edit"></i>法务部代理委托</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + /*editFlag +*/ '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.proposalId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        /*actions.push('<a class="btn btn-danger btn-xs ' + /!*removeFlag +*!/ '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');*/
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    /*代理委托流程*/
+    /*var users=String[];*/
+
+    function submitApply(id) {
+        /* if (applicantId !== currentUser.) {
+             $.modal.alertWarning("不允许非创建人提交申请！");
+             return;
+         }*/
+        $.modal.confirm("确认要提交申请吗?", function() {
+            var url = prefix + "/submitApply";
+            var data = { "id": id };
+            $.operate.submit(url, "post", "json", data);
+        });
+    }
+
+
+
+    // 请求结束后回调刷新父页面的表格
+    function refreshParentPageTable() {
+        window.parent.$.table.refresh();
+    }
+</script>
+</body>
+</html>

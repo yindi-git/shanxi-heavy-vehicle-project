@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增专利运用许可')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-permits-add">
+        
+        
+        
+<!--             <div class="form-group">    
+                <label class="col-sm-2 control-label is-required">专利提案编号：</label>
+                <div class="col-sm-4">
+                    <input name="proposalId" class="form-control" type="text" required>
+                </div>
+            </div>  -->
+            
+            
+            
+            
+       <div class="form-group">
+            <label class="col-sm-2 control-label is-required">专利提案编号：</label>
+            <div class="col-sm-4">
+                <select id ="proposalId" name="proposalId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalList()}">
+                    <option th:each="map:${Map}" th:text="${map.proposal_id}+','+${map.proposal_name}" th:value="${map.proposal_id}+','+${map.proposal_name}" ></option>  
+                </select>
+            </div>
+            
+                <label class="col-sm-2 control-label">申请人：</label>
+                <div class="col-sm-4">
+                    <input name="applicantId" class="form-control" type="text">
+                </div>            
+            
+            
+            
+            
+        </div>
+        
+
+<!--                 <label class="col-sm-2 control-label">专利提案名称：</label>
+                <div class="col-sm-4">
+                    <input name="proposalName" class="form-control" type="text">
+                </div> -->
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+<!--             <div class="form-group">    
+                <label class="col-sm-2 control-label">职务发明(0是,1否,默认0) 职务发明(0是,1否,默认0)：</label>
+                <div class="col-sm-4">
+                    <input name="employeeInvention" class="form-control" type="text">
+                </div>
+            </div> -->
+            
+            
+             
+
+            
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">提报单位：</label>
+                <div class="col-sm-4">
+                    <input name="applyDeptId" class="form-control" type="text">
+                </div>
+                
+                <label class="col-sm-2 control-label">专利类型：</label>
+                <div class="col-sm-4">
+                    <input name="typeId" class="form-control" type="text">
+                </div>
+                
+                
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">签约时间：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="signupTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+                
+                <label class="col-sm-2 control-label">生效时间：</label>
+                <div class="col-sm-4">
+                    <div class="input-group date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="takeTime" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">资产估值：</label>
+                <div class="col-sm-4">
+                    <input name="assetValuation" class="form-control" type="text">
+                </div>
+                
+                <label class="col-sm-2 control-label">评估机构：</label>
+                <div class="col-sm-4">
+                    <input name="evaluationAgency" class="form-control" type="text">
+                </div>
+                
+                
+                
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">专利权人：</label>
+                <div class="col-sm-4">
+                    <input name="patentee" class="form-control" type="text">
+                </div>
+                
+                
+                <label class="col-sm-2 control-label">组织机构：</label>
+                <div class="col-sm-4">
+                    <input name="organization" class="form-control" type="text">
+                </div>
+                
+                
+            </div>
+            
+            
+
+            
+<!--             <div class="form-group">    
+                <label class="col-sm-2 control-label">0是删除，1是正常：</label>
+                <div class="col-sm-4">
+                    <input name="isDelete" class="form-control" type="text">
+                </div>
+            </div> -->
+            
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">专利许可公司：</label>
+                <div class="col-sm-4">
+                    <input name="patentPermitCompany" class="form-control" type="text">
+                </div>
+                
+                <label class="col-sm-2 control-label">专利许可公司法人：</label>
+                <div class="col-sm-4">
+                    <input name="patentPermitLegal" class="form-control" type="text">
+                </div>
+                
+                
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">专利许可公司介绍：</label>
+                <div class="col-sm-4">
+                    <input name="patentPermitIntroduce" class="form-control" type="text">
+                </div>
+                
+                <label class="col-sm-2 control-label">专利许可公司备案费用：</label>
+                <div class="col-sm-4">
+                    <input name="patentPermitKeeppay" class="form-control" type="text">
+                </div>
+                
+                
+                
+            </div>
+
+            <div class="form-group">    
+                <label class="col-sm-2 control-label">专利许可公司代理费用：</label>
+                <div class="col-sm-4">
+                    <input name="patentPermitAgentpay" class="form-control" type="text">
+                </div>
+            </div>
+            
+            
+        <div class="form-group">
+            <label class="col-sm-2 control-label">专利许可合同：</label>
+            <div class="col-sm-4" id="fileForm1">
+                <input name="filePath1" id="filePath1" class="form-control" type="file">
+                <div class="btn-group-sm" role="group" id="addAttachInput">
+                    <a class="btn btn-success" onclick="addAttachBtn()" >
+                        <i class="fa fa-plus"></i> 追加附件
+                    </a>
+                </div>
+            </div>
+        </div>       
+            
+            
+ 
+ 
+ 
+ 
+        <div class="form-group">
+            <label class="col-sm-2 control-label">专利评估报告：</label>
+            <div class="col-sm-4" id="fileForm2">
+                <input name="filePath2" id="filePath2" class="form-control" type="file">
+                <div class="btn-group-sm" role="group" id="addAttachInput2">
+                    <a class="btn btn-success" onclick="addAttachBtn2()" >
+                        <i class="fa fa-plus"></i> 追加附件
+                    </a>
+                </div>
+            </div>
+        </div>  
+        
+        
+        
+        
+        <div class="form-group">
+            <label class="col-sm-2 control-label">专利许可附属文件：</label>
+            <div class="col-sm-4" id="fileForm3">
+                <input name="filePath3" id="filePath3" class="form-control" type="file">
+                <div class="btn-group-sm" role="group" id="addAttachInput3">
+                    <a class="btn btn-success" onclick="addAttachBtn3()" >
+                        <i class="fa fa-plus"></i> 追加附件
+                    </a>
+                </div>
+            </div>
+        </div>   
+ 
+
+            
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script src="../../ajaxfileupload.js"></script>
+    <script type="text/javascript">
+        var prefix = ctx + "permit/permits"
+        var attachFileNum=1;
+        
+        $("#form-permits-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-permits-add').serialize(),function(data){               	
+                    
+                    //保存附件
+                    var proposalId = $('#proposalId').val();
+                    var arr = proposalId.split(',');
+                    
+                    var typecount =  data.data;
+                    
+                    
+                    savepg1(typecount);
+                    savepg2(typecount);
+                    savepg3(typecount);
+                });
+                
+                
+                
+                
+/*                 $.operate.saveTab(prefix + "/edit", data, function(){
+                    $.modal.parentTab("我的拼团", prefix + "/self");
+                }); */
+                
+                
+                
+                
+                
+                
+                
+
+                
+                
+                
+            }
+        }
+
+        $("input[name='signupTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='takeTime']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+        
+        
+        
+        /***
+         * 保存附图附件
+         */
+        function savepg1(proposalId){
+            var attachArr=new Array();
+            var arr=$("#fileForm1").find("input[type='file']");
+            for(var i=0;i<arr.length;i++){
+                var fileId=$(arr[i]).attr('id');
+                attachArr.push(fileId);
+            }
+            $.ajaxFileUpload({
+                method:'POST',
+                url: ctx + "patproposal/attach/upload",
+                secureuri:false,
+                fileElementId:attachArr,
+                data:{'proposalId':proposalId,attachType:10},
+                success:function(){
+                    //继续上传技术交底附件
+/*                     $.ajaxFileUpload({
+                        method:'POST',
+                        url: ctx + "patproposal/attach/upload",
+                        secureuri:false,
+                        fileElementId:"technicalFile",
+                        data:{'proposalId':proposalId,attachType:1},
+                        success:function(result){
+                            var parent = window.parent;
+                            if (parent.table.options.type == 0) {
+                                $.modal.close();
+                                parent.$.modal.msgSuccess(result.msg);
+                                parent.$.table.refresh();
+                            }
+                        }
+                    }); */
+                } 
+            });
+        }        
+        
+ 
+        
+        
+        
+        
+        
+        
+        
+        /***
+         * 保存附图附件
+         */
+        function savepg2(proposalId){
+            var attachArr=new Array();
+            var arr=$("#fileForm2").find("input[type='file']");
+            for(var i=0;i<arr.length;i++){
+                var fileId=$(arr[i]).attr('id');
+                attachArr.push(fileId);
+            }
+            $.ajaxFileUpload({
+                method:'POST',
+                url: ctx + "patproposal/attach/upload",
+                secureuri:false,
+                fileElementId:attachArr,
+                data:{'proposalId':proposalId,attachType:11},
+                success:function(){
+                    //继续上传技术交底附件
+                } 
+            });
+        } 
+        
+        
+        
+
+        
+        /***
+         * 保存附图附件
+         */
+        function savepg3(proposalId){
+            var attachArr=new Array();
+            var arr=$("#fileForm3").find("input[type='file']");
+            for(var i=0;i<arr.length;i++){
+                var fileId=$(arr[i]).attr('id');
+                attachArr.push(fileId);
+            }
+            $.ajaxFileUpload({
+                method:'POST',
+                url: ctx + "patproposal/attach/upload",
+                secureuri:false,
+                fileElementId:attachArr,
+                data:{'proposalId':proposalId,attachType:12},
+                success:function(){
+                    //继续上传技术交底附件
+                } 
+            });
+        }         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        function addAttachBtn(){
+        	
+            ++attachFileNum;
+            $("#addAttachInput").before(
+                '<div id="inputFile'+attachFileNum+'">' +
+                '   <input class="form-control" style="width: 95%;display:inline-block;" type="file" name="filePath1" id="filePath1'+attachFileNum+'">'+
+                '   <a class="close-link" onclick="delAttachBtn(inputFile'+attachFileNum+');" title="删除该附件">' +
+                '       <i class="fa fa-times"></i>' +
+                '   </a>' +
+                '</div>');
+        }
+        
+        
+        
+        function addAttachBtn2(){
+        	
+            ++attachFileNum;
+            $("#addAttachInput2").before(
+                '<div id="inputFile'+attachFileNum+'">' +
+                '   <input class="form-control" style="width: 95%;display:inline-block;" type="file" name="filePath2" id="filePath2'+attachFileNum+'">'+
+                '   <a class="close-link" onclick="delAttachBtn(inputFile'+attachFileNum+');" title="删除该附件">' +
+                '       <i class="fa fa-times"></i>' +
+                '   </a>' +
+                '</div>');
+        }
+        
+        
+        
+        function addAttachBtn3(){
+        	
+            ++attachFileNum;
+            $("#addAttachInput3").before(
+                '<div id="inputFile'+attachFileNum+'">' +
+                '   <input class="form-control" style="width: 95%;display:inline-block;" type="file" name="filePath3" id="filePath3'+attachFileNum+'">'+
+                '   <a class="close-link" onclick="delAttachBtn(inputFile'+attachFileNum+');" title="删除该附件">' +
+                '       <i class="fa fa-times"></i>' +
+                '   </a>' +
+                '</div>');
+        }
+        
+        
+        
+        /**
+         *  删除附件
+         */
+        function delAttachBtn(param){
+            $("#"+param.id).remove();
+        }
+        
+        
+        
+        
+        
+        
+        
+    </script>
+</body>
+</html>

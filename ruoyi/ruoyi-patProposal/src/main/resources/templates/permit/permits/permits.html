@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('专利运用许可列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>专利提案编号：</label>
+                                <input type="text" name="proposalId"/>
+                            </li>
+                            <li>
+                                <label>专利提案名称：</label>
+                                <input type="text" name="proposalName"/>
+                            </li>
+                            
+                            
+                            <!--   
+                            <li>
+                                <label>职务发明(0是,1否,默认0) 职务发明(0是,1否,默认0)：</label>
+                                <input type="text" name="employeeInvention"/>
+                            </li>
+                            <li>
+                                <label>申请人id：</label>
+                                <input type="text" name="applicantId"/>
+                            </li>
+                            <li>
+                                <label>提报单位id 提报单位id：</label>
+                                <input type="text" name="applyDeptId"/>
+                            </li>
+                            <li>
+                                <label>专利类型id 专利类型id：</label>
+                                <input type="text" name="typeId"/>
+                            </li>
+                            <li class="select-time">
+                                <label>签约时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginSignupTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endSignupTime]"/>
+                            </li>
+                            <li class="select-time">
+                                <label>生效时间：</label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTakeTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTakeTime]"/>
+                            </li>
+                            <li>
+                                <label>资产估值：</label>
+                                <input type="text" name="assetValuation"/>
+                            </li>
+                            <li>
+                                <label>评估机构：</label>
+                                <input type="text" name="evaluationAgency"/>
+                            </li>
+                            <li>
+                                <label>专利权人：</label>
+                                <input type="text" name="patentee"/>
+                            </li>
+                            <li>
+                                <label>组织机构：</label>
+                                <input type="text" name="organization"/>
+                            </li>
+                            <li>
+                                <label>0是删除，1是正常：</label>
+                                <input type="text" name="isDelete"/>
+                            </li>-->
+                            <li>
+                                <label>专利许可公司：</label>
+                                <input type="text" name="patentPermitCompany"/>
+                            </li>
+                            
+                            <!-- 
+                            <li>
+                                <label>专利许可公司法人：</label>
+                                <input type="text" name="patentPermitLegal"/>
+                            </li>
+                            <li>
+                                <label>专利许可公司介绍：</label>
+                                <input type="text" name="patentPermitIntroduce"/>
+                            </li>
+                            <li>
+                                <label>专利许可公司备案费用：</label>
+                                <input type="text" name="patentPermitKeeppay"/>
+                            </li>
+                            <li>
+                                <label>专利许可公司代理费用：</label>
+                                <input type="text" name="patentPermitAgentpay"/>
+                            </li> -->
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="permit:permits:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="permit:permits:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="permit:permits:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="permit:permits:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('permit:permits:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('permit:permits:remove')}]];
+        var prefix = ctx + "permit/permits";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "专利运用许可",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'permitId', 
+                    title: '专利许可ID',
+                    visible: false
+                },
+                {
+                    field: 'proposalId', 
+                    title: '专利提案编号'
+                },
+                {
+                    field: 'proposalName', 
+                    title: '专利提案名称'
+                },
+/*                 {
+                    field: 'employeeInvention', 
+                    title: '职务发明(0是,1否,默认0) 职务发明(0是,1否,默认0)'
+                }, */
+                {
+                    field: 'applicantId', 
+                    title: '申请人'
+                },
+                {
+                    field: 'applyDeptId', 
+                    title: '提报单位'
+                },
+                {
+                    field: 'typeId', 
+                    title: '专利类型'
+                },
+                {
+                    field: 'signupTime', 
+                    title: '签约时间'
+                },
+                {
+                    field: 'takeTime', 
+                    title: '生效时间'
+                },
+                {
+                    field: 'assetValuation', 
+                    title: '资产估值'
+                },
+                {
+                    field: 'evaluationAgency', 
+                    title: '评估机构'
+                },
+                {
+                    field: 'patentee', 
+                    title: '专利权人'
+                },
+                {
+                    field: 'organization', 
+                    title: '组织机构'
+                },
+                {
+                    field: 'remark', 
+                    title: '备注'
+                },
+/*                 {
+                    field: 'isDelete', 
+                    title: '0是删除，1是正常'
+                }, */
+                {
+                    field: 'patentPermitCompany', 
+                    title: '专利许可公司'
+                },
+                {
+                    field: 'patentPermitLegal', 
+                    title: '专利许可公司法人'
+                },
+                {
+                    field: 'patentPermitIntroduce', 
+                    title: '专利许可公司介绍'
+                },
+                {
+                    field: 'patentPermitKeeppay', 
+                    title: '专利许可公司备案费用'
+                },
+                {
+                    field: 'patentPermitAgentpay', 
+                    title: '专利许可公司代理费用'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.permitId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.permitId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

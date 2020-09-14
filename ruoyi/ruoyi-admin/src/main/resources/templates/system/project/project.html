@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('项目名称列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+        <div class="row">
+            <div class="col-sm-12 search-collapse">
+                <form id="formId">
+                    <div class="select-list">
+                        <ul>
+                            <li>
+                                <label>项目名：</label>
+                                <input type="text" name="projectName"/>
+                            </li>
+                            <li>
+                                <label>责任人：</label>
+                                <input type="text" name="responsibleUser"/>
+                            </li>
+                            <li>
+                                <label>保密级别：</label>
+                                <select name="securityLevel" class="form-control m-b" required>
+                                    <option value="1">1级</option>
+                                    <option value="2">2级</option>
+                                    <option value="3">3级</option>
+                                    <option value="4">4级</option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+
+            <div class="btn-group-sm" id="toolbar" role="group">
+                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:project:add">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:project:edit">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:project:remove">
+                    <i class="fa fa-remove"></i> 删除
+                </a>
+                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:project:export">
+                    <i class="fa fa-download"></i> 导出
+                </a>
+            </div>
+            <div class="col-sm-12 select-table table-striped">
+                <table id="bootstrap-table"></table>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:project:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('system:project:remove')}]];
+        var prefix = ctx + "system/project";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+                exportUrl: prefix + "/export",
+                modalName: "项目名称",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'projectId', 
+                    title: 'id主键',
+                    visible: false
+                },
+                {
+                    field: 'projectName', 
+                    title: '项目名'
+                },
+                {
+                    field: 'projectDesc', 
+                    title: '项目描述',
+                    visible: false
+                },
+                {
+                    field: 'responsibleUnitId', 
+                    title: '责任单位ID',
+                    visible: false
+                },
+                {
+                    field: 'responsibleUnit', 
+                    title: '责任单位'
+                },
+                {
+                    field: 'responsibleUserId', 
+                    title: '责任人ID',
+                    visible: false
+                },
+                {
+                    field: 'responsibleUser', 
+                    title: '责任人'
+                },
+                {
+                    field: 'innovativePoints', 
+                    title: '创新点',
+                    visible: false
+                },
+                {
+                    field: 'projectCycle', 
+                    title: '项目周期',
+                    visible: false
+                },
+                {
+                    field: 'securityLevel', 
+                    title: '保密级别'
+                },
+                {
+                    field: 'planProposalNumber', 
+                    title: '计划专利数量',
+                    visible: false
+                },
+                {
+                    field: 'planInventorPropNumber', 
+                    title: '计划发明专利数量',
+                    visible: false
+                },
+                {
+                    field: 'projectLiterature', 
+                    title: '项目文献',
+                    visible: false
+                },
+                {
+                    field: 'repairsUserId', 
+                    title: '维护人ID',
+                    visible: false
+                },
+                {
+                    field: 'repairsUser', 
+                    title: '维护人'
+                },
+                {
+                    field: 'repairsTime', 
+                    title: '维护时间'
+                },
+                {
+                    field: 'projectComments', 
+                    title: '项目备注'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.projectId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.projectId + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

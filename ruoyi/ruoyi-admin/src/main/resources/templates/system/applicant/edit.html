@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-applicant-edit" th:object="${ryProposalApplicant}">
+            <input name="applicantId" th:field="*{applicantId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">单位名称：</label>
+                <div class="col-sm-8">
+                    <input name="applicantName" th:field="*{applicantName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">单位地址：</label>
+                <div class="col-sm-8">
+                    <input name="applicantAddr" th:field="*{applicantAddr}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">单位编码：</label>
+                <div class="col-sm-8">
+                    <input name="applicantCode" th:field="*{applicantCode}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/applicant";
+        $("#form-applicant-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-applicant-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

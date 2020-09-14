@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改专利提案相关')" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-pat-edit" th:object="${proposalPat}">
+        <input name="proposalId" th:field="*{proposalId}" type="hidden">
+        <input name="instanceId" th:field="*{instanceId}" type="hidden">
+        <input type="hidden" name="p_COM_comment" />
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                专利提案申请表
+            </div>
+            <div class="ibox-content" id="contentForm">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label is-required">提案编号：</label>
+                    <div class="col-sm-4">
+                        <input name="proposalId" th:field="*{proposalId}" class="form-control" type="text" readonly="readonly">
+                    </div>
+                    <label class="col-sm-2 control-label">专利名称：</label>
+                    <div class="col-sm-4">
+                        <input name="proposalName" th:field="*{proposalName}" class="form-control" type="text" readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">职务发明：</label>
+                    <div class="col-sm-4">
+                        <div class="radio-box">
+                            <input type="radio" id="employeeInvention0" name="employeeInvention"  value="0" th:field="*{employeeInvention}"  disabled="disabled">
+                            <label for="employeeInvention0">是</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="employeeInvention1" name="employeeInvention"  value="1" th:field="*{employeeInvention}"  disabled="disabled">
+                            <label for="employeeInvention1">否</label>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label">申请人：</label>
+                    <div class="col-sm-4">
+                        <select name="applicantId" class="form-control m-b" th:with="Map=${@PatCommonService.getApplicant()}"  disabled="disabled">
+                            <option th:each="map:${Map}" th:text="${map.applicant_name}" th:value="${map.applicant_id}" th:field="*{applicantId}" ></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">提报单位：</label>
+                    <div class="col-sm-4">
+                        <input name="applyDeptId" th:field="*{applyDeptId}" class="form-control" type="text" readonly="readonly">
+                    </div>
+                    <label class="col-sm-2 control-label">专利类型：</label>
+                    <div class="col-sm-4">
+                        <select name="typeId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalType()}" disabled="disabled">
+                            <option th:each="map:${Map}" th:text="${map.type_name}" th:value="${map.type_id}" th:field="*{typeId}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">重要度：</label>
+                    <div class="col-sm-4">
+                        <select name="importanceId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalImportance()}"  disabled="disabled">
+                            <option th:each="map:${Map}" th:text="${map.importance_level}" th:value="${map.importance_id}" th:field="*{importanceId}"></option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">提案日期：</label>
+                    <div class="col-sm-4">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input name="launchTime" th:value="${#dates.format(proposalPat.launchTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text" readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">所属项目：</label>
+                    <div class="col-sm-4">
+                        <select name="projectId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalProject()}"  disabled="disabled">
+                            <option th:each="map:${Map}" th:text="${map.project_name}" th:value="${map.project_id}" th:field="*{projectId}"></option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">车型：</label>
+                    <div class="col-sm-4">
+                        <select name="motorcycleId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalMotorcycle()}" disabled="disabled">
+                            <option th:each="map:${Map}" th:text="${map.motorcycle_type}" th:value="${map.motorcycle_id}"  th:field="*{motorcycleId}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">申请国家：</label>
+                    <div class="col-sm-4">
+                        <select name="countryId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalCountry()}" disabled="disabled">
+                            <option th:each="map:${Map}" th:text="${map.country_name}" th:value="${map.country_id}" th:field="*{countryId}"></option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">技术领域：</label>
+                    <div class="col-sm-4">
+                        <select name="technicalId" class="form-control m-b" th:with="Map=${@PatCommonService.getProposalTechnical()}" disabled="disabled">
+                            <option th:each="map:${Map}" th:text="${map.technical_desc}" th:value="${map.technical_id}" th:field="*{technicalId}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">提前公开：</label>
+                    <div class="col-sm-4">
+                        <div class="radio-box">
+                            <input type="radio" id="isOpen0" name="isOpen" value="0" th:field="*{isOpen}"  disabled="disabled">
+                            <label for="isOpen0">是</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="isOpen1" name="isOpen" value="1" th:field="*{isOpen}"  disabled="disabled">
+                            <label for="isOpen1">否</label>
+                        </div>
+                    </div>
+                    <label class="col-sm-2 control-label">是否预审：</label>
+                    <div class="col-sm-4">
+                        <div class="radio-box">
+                            <input type="radio" id="isPreliminary0" name="isPreliminary"  value="0" th:field="*{isPreliminary}" disabled="disabled">
+                            <label for="isPreliminary0">是</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="isPreliminary1" name="isPreliminary"  value="1" th:field="*{isPreliminary}"  disabled="disabled">
+                            <label for="isPreliminary1">否</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">背景技术：</label>
+                    <div class="col-sm-4">
+                        <textarea name="backTech" class="form-control" readonly="readonly">[[*{backTech}]]</textarea>
+                    </div>
+                    <label class="col-sm-2 control-label">内容概要：</label>
+                    <div class="col-sm-4">
+                        <textarea name="contentSummary" class="form-control" readonly="readonly">[[*{contentSummary}]]</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">联系人：</label>
+                    <div class="col-sm-4">
+                        <input name="contactsId" th:field="*{contactsId}" class="form-control" type="text" readonly="readonly">
+                    </div>
+                    <label class="col-sm-2 control-label">更改人：</label>
+                    <div class="col-sm-4">
+                        <input name="contactsId" th:field="*{createBy}" class="form-control" type="text" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                历史审批情况
+            </div>
+            <div class="ibox-content" id="contentForm">
+
+            </div>
+        </div>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                审批信息
+            </div>
+            <div class="ibox-content" id="contentForm">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label is-required" for="lawMinistryLeaderApproved">审批结论：</label>
+                    <div class="col-sm-4">
+                        <select name="p_B_lawMinistryLeaderApproved" id="lawMinistryLeaderApproved" class="form-control m-b">
+                            <option value="true">同意</option>
+                            <option value="false">拒绝</option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label is-required">审批意见：</label>
+                    <div class="col-sm-4">
+                        <textarea name="comment" class="form-control" required></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: select2-js" />
+<script th:src="@{/js/activiti.js}"></script>
+<script th:inline="javascript">
+    var prefix = ctx + "patProposal";
+    $("#form-pat-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            if ($('textarea[name="comment"]').val()) {
+                $('input[name="p_COM_comment"]').val($('textarea[name="comment"]').val());
+            }
+            var taskId = [[${taskId}]];
+            $.operate.save(prefix + "/complete/" + taskId, $('#form-pat-edit').serialize());
+        }
+    }
+
+    $("input[name='startTime']").datetimepicker({
+        autoclose: true
+    });
+
+    $("input[name='endTime']").datetimepicker({
+        autoclose: true
+    });
+
+    $(function () {
+        var proposalPat = [[${proposalPat}]];
+        var dateSub = formatTotalDateSub(proposalPat.totalTime);
+        $('input[name="totalTimeText"]').val(dateSub);
+
+        $('select[name="type"]').prop('disabled', true);
+    });
+</script>
+</body>
+</html>

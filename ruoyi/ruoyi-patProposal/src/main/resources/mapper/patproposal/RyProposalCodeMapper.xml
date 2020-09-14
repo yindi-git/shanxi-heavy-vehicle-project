@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.patproposal.mapper.RyProposalCodeMapper">
+    
+    <resultMap type="RyProposalCode" id="RyProposalCodeResult">
+        <result property="pcId"    column="pc_id"    />
+        <result property="pcBody"    column="pc_body"    />
+        <result property="pcYear"    column="pc_year"    />
+        <result property="pcTypeCode"    column="pc_type_code"    />
+        <result property="pcTypeName"    column="pc_type_name"    />
+        <result property="pcNextCode"    column="pc_next_code"    />
+    </resultMap>
+
+    <sql id="selectRyProposalCodeVo">
+        select pc_id, pc_body, pc_year, pc_type_code, pc_type_name, pc_next_code from ry_proposal_code
+    </sql>
+
+    <select id="selectRyProposalCodeList" parameterType="RyProposalCode" resultMap="RyProposalCodeResult">
+        <include refid="selectRyProposalCodeVo"/>
+        <where>  
+            <if test="pcBody != null  and pcBody != ''"> and pc_body = #{pcBody}</if>
+            <if test="pcYear != null  and pcYear != ''"> and pc_year = #{pcYear}</if>
+            <if test="pcTypeCode != null  and pcTypeCode != ''"> and pc_type_code = #{pcTypeCode}</if>
+            <if test="pcTypeName != null  and pcTypeName != ''"> and pc_type_name like concat('%', #{pcTypeName}, '%')</if>
+            <if test="pcNextCode != null "> and pc_next_code = #{pcNextCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyProposalCodeById" parameterType="Long" resultMap="RyProposalCodeResult">
+        <include refid="selectRyProposalCodeVo"/>
+        where pc_id = #{pcId}
+    </select>
+        
+    <insert id="insertRyProposalCode" parameterType="RyProposalCode" useGeneratedKeys="true" keyProperty="pcId">
+        insert into ry_proposal_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pcBody != null  and pcBody != ''">pc_body,</if>
+            <if test="pcYear != null  and pcYear != ''">pc_year,</if>
+            <if test="pcTypeCode != null  and pcTypeCode != ''">pc_type_code,</if>
+            <if test="pcTypeName != null  and pcTypeName != ''">pc_type_name,</if>
+            <if test="pcNextCode != null ">pc_next_code,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pcBody != null  and pcBody != ''">#{pcBody},</if>
+            <if test="pcYear != null  and pcYear != ''">#{pcYear},</if>
+            <if test="pcTypeCode != null  and pcTypeCode != ''">#{pcTypeCode},</if>
+            <if test="pcTypeName != null  and pcTypeName != ''">#{pcTypeName},</if>
+            <if test="pcNextCode != null ">#{pcNextCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyProposalCode" parameterType="RyProposalCode">
+        update ry_proposal_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pcBody != null  and pcBody != ''">pc_body = #{pcBody},</if>
+            <if test="pcYear != null  and pcYear != ''">pc_year = #{pcYear},</if>
+            <if test="pcTypeCode != null  and pcTypeCode != ''">pc_type_code = #{pcTypeCode},</if>
+            <if test="pcTypeName != null  and pcTypeName != ''">pc_type_name = #{pcTypeName},</if>
+            <if test="pcNextCode != null ">pc_next_code = #{pcNextCode},</if>
+        </trim>
+        where pc_id = #{pcId}
+    </update>
+
+    <delete id="deleteRyProposalCodeById" parameterType="Long">
+        delete from ry_proposal_code where pc_id = #{pcId}
+    </delete>
+
+    <delete id="deleteRyProposalCodeByIds" parameterType="String">
+        delete from ry_proposal_code where pc_id in 
+        <foreach item="pcId" collection="array" open="(" separator="," close=")">
+            #{pcId}
+        </foreach>
+    </delete>
+    
+</mapper>

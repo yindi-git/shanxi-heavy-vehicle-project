@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.utiliza.mapper.RyPatentlReleaseMapper">
+    
+    <resultMap type="RyPatentlRelease" id="RyPatentlReleaseResult">
+        <result property="permitId"    column="permit_id"    />
+        <result property="proposalId"    column="proposal_id"    />
+        <result property="proposalName"    column="proposal_name"    />
+        <result property="employeeInvention"    column="employee_invention"    />
+        <result property="applicantId"    column="applicant_id"    />
+        <result property="patentee"    column="patentee"    />
+        <result property="reason"    column="reason"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="isDelete"    column="is_delete"    />
+    </resultMap>
+
+    <sql id="selectRyPatentlReleaseVo">
+        select permit_id, proposal_id, proposal_name, employee_invention, applicant_id, patentee, reason, remark, create_time, create_by, is_delete from ry_patentl_release
+    </sql>
+
+    <select id="selectRyPatentlReleaseList" parameterType="RyPatentlRelease" resultMap="RyPatentlReleaseResult">
+        <include refid="selectRyPatentlReleaseVo"/>
+        <where>  
+            <if test="proposalId != null  and proposalId != ''"> and proposal_id = #{proposalId}</if>
+            <if test="proposalName != null  and proposalName != ''"> and proposal_name like concat('%', #{proposalName}, '%')</if>
+            <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+        </where>
+    </select>
+    
+    <select id="selectRyPatentlReleaseById" parameterType="Long" resultMap="RyPatentlReleaseResult">
+        <include refid="selectRyPatentlReleaseVo"/>
+        where permit_id = #{permitId}
+    </select>
+        
+    <insert id="insertRyPatentlRelease" parameterType="RyPatentlRelease" useGeneratedKeys="true" keyProperty="permitId">
+        insert into ry_patentl_release
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">proposal_id,</if>
+            <if test="proposalName != null  and proposalName != ''">proposal_name,</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">employee_invention,</if>
+            <if test="applicantId != null  and applicantId != ''">applicant_id,</if>
+            <if test="patentee != null  and patentee != ''">patentee,</if>
+            <if test="reason != null  and reason != ''">reason,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="isDelete != null ">is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">#{proposalId},</if>
+            <if test="proposalName != null  and proposalName != ''">#{proposalName},</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">#{employeeInvention},</if>
+            <if test="applicantId != null  and applicantId != ''">#{applicantId},</if>
+            <if test="patentee != null  and patentee != ''">#{patentee},</if>
+            <if test="reason != null  and reason != ''">#{reason},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="isDelete != null ">#{isDelete},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRyPatentlRelease" parameterType="RyPatentlRelease">
+        update ry_patentl_release
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="proposalId != null  and proposalId != ''">proposal_id = #{proposalId},</if>
+            <if test="proposalName != null  and proposalName != ''">proposal_name = #{proposalName},</if>
+            <if test="employeeInvention != null  and employeeInvention != ''">employee_invention = #{employeeInvention},</if>
+            <if test="applicantId != null  and applicantId != ''">applicant_id = #{applicantId},</if>
+            <if test="patentee != null  and patentee != ''">patentee = #{patentee},</if>
+            <if test="reason != null  and reason != ''">reason = #{reason},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="isDelete != null ">is_delete = #{isDelete},</if>
+        </trim>
+        where permit_id = #{permitId}
+    </update>
+
+    <delete id="deleteRyPatentlReleaseById" parameterType="Long">
+        delete from ry_patentl_release where permit_id = #{permitId}
+    </delete>
+
+    <delete id="deleteRyPatentlReleaseByIds" parameterType="String">
+        delete from ry_patentl_release where permit_id in 
+        <foreach item="permitId" collection="array" open="(" separator="," close=")">
+            #{permitId}
+        </foreach>
+    </delete>
+ 
+ 
+ 
+    <select id="getNewIdRelease" resultType="Integer">
+		SELECT permit_id FROM ry_patentl_release ORDER BY permit_id DESC limit 1
+    </select>   
+ 
+ 
+ 
+ 
+ 
+ 
+    
+</mapper>

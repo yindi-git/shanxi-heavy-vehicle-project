@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改专利类型信息')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-type-edit" th:object="${ryProposalType}">
+            <input name="typeId" th:field="*{typeId}" type="hidden">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">类型名称：</label>
+                <div class="col-sm-8">
+                    <input name="typeName" th:field="*{typeName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">专利号对应编号：</label>
+                <div class="col-sm-8">
+                    <input name="typeNumForProposal" th:field="*{typeNumForProposal}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">保护对象：</label>
+                <div class="col-sm-8">
+                    <input name="protectionObject" th:field="*{protectionObject}" class="form-control" type="text">
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/type";
+        $("#form-type-edit").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-type-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

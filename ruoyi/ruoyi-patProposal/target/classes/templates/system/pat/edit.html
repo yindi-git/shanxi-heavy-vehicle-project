@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-pat-edit" th:object="${ryProposalPat}">
+        <input name="proposalId" th:field="*{proposalId}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请专利名称：</label>
+            <div class="col-sm-8">
+                <input name="proposalName" th:field="*{proposalName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发明职务：</label>
+            <div class="col-sm-8">
+                <input name="invention" th:field="*{invention}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请人：</label>
+            <div class="col-sm-8">
+                <input name="userId" th:field="*{userName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">提报单位：</label>
+            <div class="col-sm-8">
+                <input name="deptId" th:field="*{deptName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">专利类型：</label>
+            <div class="col-sm-8">
+                <input name="typeId" th:field="*{typeName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">重要度：</label>
+            <div class="col-sm-8">
+                <input name="importance" th:field="*{importance}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">提案日期：</label>
+            <div class="col-sm-8">
+                <div class="input-group date">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input name="launchTime" th:value="${#dates.format(ryProposalPat.launchTime, 'yyyy-MM-dd')}" class="form-control" placeholder="yyyy-MM-dd" type="text">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属研发项目：</label>
+            <div class="col-sm-8">
+                <input name="projectId" th:field="*{projectName}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">车型：</label>
+            <div class="col-sm-8">
+                <input name="motorcycleId" th:field="*{motorcycleType}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请国家：</label>
+            <div class="col-sm-8">
+                <input name="countryId" th:field="*{proposalCountry}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">技术领域：</label>
+            <div class="col-sm-8">
+                <input name="technicalId" th:field="*{technicalDesc}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">提前公开：</label>
+            <div class="col-sm-8">
+                <input name="isOpen" th:field="*{isOpen}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否预审：</label>
+            <div class="col-sm-8">
+                <input name="isPreliminary" th:field="*{isPreliminary}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">背景技术：</label>
+            <div class="col-sm-8">
+                <textarea name="backTech" class="form-control">[[*{backTech}]]</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">内容概要：</label>
+            <div class="col-sm-8">
+                <textarea name="contentSummary" class="form-control">[[*{contentSummary}]]</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">附件：</label>
+            <div class="col-sm-8">
+                <input name="fileId" th:field="*{fileId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">发明表id：</label>
+            <div class="col-sm-8">
+                <input name="inventorId" th:field="*{inventorId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人id：</label>
+            <div class="col-sm-8">
+                <input name="contactsId" th:field="*{contactsId}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">技术交底附件id：</label>
+            <div class="col-sm-8">
+                <input name="technicalFile" th:field="*{technicalFile}" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: datetimepicker-js" />
+<script type="text/javascript">
+    var prefix = ctx + "system/pat";
+    $("#form-pat-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-pat-edit').serialize());
+        }
+    }
+
+    $("input[name='launchTime']").datetimepicker({
+        format: "yyyy-mm-dd",
+        minView: "month",
+        autoclose: true
+    });
+</script>
+</body>
+</html>

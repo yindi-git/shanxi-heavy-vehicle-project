@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增代理机构信息')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-agency-add">
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">代理机构名称：</label>
+                <div class="col-sm-8">
+                    <input name="agencyName" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">代理机构编号：</label>
+                <div class="col-sm-8">
+                    <input name="agencyNo" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">代理机构编码：</label>
+                <div class="col-sm-8">
+                    <input name="agencycode" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">负责人ID：</label>
+                <div class="col-sm-8">
+                    <input name="responsibleUserId" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">负责人姓名：</label>
+                <div class="col-sm-8">
+                    <input name="responsibleUser" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">联系电话：</label>
+                <div class="col-sm-8">
+                    <input name="agencyTel" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">办公地址：</label>
+                <div class="col-sm-8">
+                    <input name="agencyAddress" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label is-required">从业人数：</label>
+                <div class="col-sm-8">
+                    <input name="numberOfAgency" class="form-control" type="text" required>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">执业证件  附件：</label>
+                <div class="col-sm-8">
+                    <input name="businessLicense" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">执业证件 附件：</label>
+                <div class="col-sm-8">
+                    <input name="practiceCertificate" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">成立时间：</label>
+                <div class="col-sm-8">
+                    <input name="foundedTime" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">机构评级：</label>
+                <div class="col-sm-8">
+                    <input name="agencyLevel" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-sm-3 control-label">机构状态  0 正常合作 1  停止合作    2-已撤销：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box">
+                        <input type="radio" name="agencyStatus" value="">
+                        <label th:for="agencyStatus" th:text="未知"></label>
+                    </div>
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 代码生成请选择字典属性</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script type="text/javascript">
+        var prefix = ctx + "system/agency"
+        $("#form-agency-add").validate({
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/add", $('#form-agency-add').serialize());
+            }
+        }
+    </script>
+</body>
+</html>
